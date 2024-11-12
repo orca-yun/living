@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.live.LivingRoomLiveRecordMapper">
+
+    <resultMap id="LivingRoomLiveRecord" type="ag.orca.living.core.entity.live.LivingRoomLiveRecord">
+        <result property="id" column="id"/>
+        <result property="orgId" column="org_id"/>
+        <result property="roomId" column="room_id"/>
+
+        <result property="startDate" column="start_date"/>
+        <result property="beginTime" column="begin_time"/>
+        <result property="stopDate" column="stop_date"/>
+        <result property="endTime" column="end_time"/>
+        <result property="cost" column="cost"/>
+        <result property="status" column="status"/>
+        <result property="needRecord" column="need_record"/>
+        <result property="liveSource" column="live_source"/>
+
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               org_id,
+               room_id,
+
+               start_date,
+               begin_time,
+               stop_date,
+               end_time,
+               cost,
+               status,
+               need_record,
+               live_source,
+
+               deleted,
+               create_time,
+               update_time
+        from t_living_room_live_record
+    </sql>
+
+    <update id="finishLivingRecord">
+        update t_living_room_live_record
+        set stop_date=#{stopDate},
+            end_time = #{endTime},
+            cost     = #{cost},
+            status   = #{status}
+        where id = #{id}
+    </update>
+
+    <select id="findLatestLiveRecord" resultMap="LivingRoomLiveRecord">
+        <include refid="selectColumns"/>
+        where room_id = #{roomId} and deleted = 0
+        order by id desc
+        limit 1
+
+    </select>
+    <select id="findListByRecordIdList" resultMap="LivingRoomLiveRecord">
+        <include refid="selectColumns"/>
+        <where>
+            <if test="status != null">and status = #{status}</if>
+            <if test="ids != null and ids.size() > 0">
+                and id in
+                <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="findLiveRecordById" resultMap="LivingRoomLiveRecord">
+        <include refid="selectColumns"/>
+        where id =#{id}
+    </select>
+
+
+    <insert id="insert" parameterType="ag.orca.living.core.entity.live.LivingRoomLiveRecord">
+        insert t_living_room_live_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orgId != null">org_id,</if>
+            <if test="roomId != null">room_id,</if>
+
+            <if test="startDate != null">start_date,</if>
+            <if test="beginTime != null">begin_time,</if>
+            <if test="stopDate != null">stop_date,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="cost != null">cost,</if>
+            <if test="status != null">status,</if>
+            <if test="needRecord != null">need_record,</if>
+            <if test="liveSource != null">live_source,</if>
+
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orgId != null">#{orgId},</if>
+            <if test="roomId != null">#{roomId},</if>
+
+            <if test="startDate != null">#{startDate},</if>
+            <if test="beginTime != null">#{beginTime},</if>
+            <if test="stopDate != null">#{stopDate},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="cost != null">#{cost},</if>
+            <if test="status != null">#{status},</if>
+            <if test="needRecord != null">#{needRecord},</if>
+            <if test="liveSource != null">#{liveSource},</if>
+
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <select id="findListByNearRoomIdList" resultMap="LivingRoomLiveRecord">
+        <include refid="selectColumns"/>
+        where status = 0 and room_id in
+        <foreach collection="roomIds" item="roomId" open="(" close=")" separator=",">
+            #{roomId}
+        </foreach>
+    </select>
+
+
+    <resultMap id="LivingOrgWeekLiveNumVo" type="ag.orca.living.core.vo.stats.LivingOrgWeekLiveNumVo">
+        <result property="date" column="date"/>
+        <result property="liveNum" column="live_num"/>
+    </resultMap>
+
+    <select id="weekLiveNum" resultMap="LivingOrgWeekLiveNumVo">
+        select start_date as `date`,
+               count(1)   as live_num
+        from t_living_room_live_record
+        where org_id = #{orgId}
+          and start_date >= #{startDate}
+          and #{stopDate} >= start_date
+        group by start_date
+    </select>
+
+    <select id="totalLiveNum" resultType="java.lang.Long">
+        select count(1) as num
+        from t_living_room_live_record
+        where org_id = #{orgId}
+    </select>
+
+    <select id="findLivingRecordsByOrgIdAndStartDate" resultMap="LivingRoomLiveRecord">
+        <include refid="selectColumns"/>
+        <where>
+            and deleted = 0
+            <if test="orgId != null">and org_id= #{orgId}</if>
+            <if test="startDate != null">and start_date= #{startDate}</if>
+        </where>
+    </select>
+
+    <select id="findLiveRecordsByRoomIdAndStartDate" resultMap="LivingRoomLiveRecord">
+        <include refid="selectColumns"/>
+        <where>
+            and deleted = 0
+            <if test="roomId != null">and room_id= #{roomId}</if>
+            <if test="startDate != null">and start_date= #{startDate}</if>
+        </where>
+    </select>
+
+
+</mapper>

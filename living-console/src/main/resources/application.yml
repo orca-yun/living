@@ -1,0 +1,57 @@
+server:
+  port: 8002
+
+spring:
+  messages:
+    basename: i18n/messages
+  profiles:
+    active: dev
+    include: ${spring.profiles.active}
+  application:
+    name: live-console
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 100MB
+
+# dubbo
+dubbo:
+  registry:
+    address: nacos://nacos:8848
+  application:
+    logger: slf4j
+    name: ${spring.application.name}
+    qos-enable: off
+
+# s3
+s3:
+  access-key: [S3-ACCESS-KEY]
+  secret-key: [S3-SECRET-KEY]
+  region: [S3 region]
+  default-bucket: img
+  file-bucket: orca-pdf
+
+# jwt
+jwt:
+  # 注意各端保持一致
+  secret: [JWT SECRET]
+  token-prefix: Bearer
+  header-string: Authorization
+
+# spring doc
+springdoc:
+  api-info:
+    name: ${spring.application.name}
+    version: 1.0.0
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /api-docs
+    enabled: true
+    groups:
+      enabled: true
+  packages-to-scan: ag.orca
+  group-configs:
+    - group: 普通接口
+      paths-to-match:
+        - /v2/**

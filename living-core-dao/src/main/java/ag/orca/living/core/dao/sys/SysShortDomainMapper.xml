@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.sys.SysShortDomainMapper">
+
+    <resultMap id="SysShortDomain" type="ag.orca.living.core.entity.sys.SysShortDomain">
+        <result property="id" column="id"/>
+        <result property="domain" column="domain"/>
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               domain,
+               deleted,
+               create_time,
+               update_time
+        from t_sys_short_domain
+    </sql>
+    <select id="findAllDomain" resultMap="SysShortDomain">
+        <include refid="selectColumns"/>
+        where deleted = 0
+    </select>
+
+
+</mapper>

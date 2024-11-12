@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.media.LivingMediaLibMapper">
+    <resultMap id="LivingMediaLib" type="ag.orca.living.core.entity.media.LivingMediaLib">
+        <result property="id" column="id"/>
+        <result property="orgId" column="org_id"/>
+
+        <result property="name" column="name"/>
+        <result property="fileName" column="file_name"/>
+        <result property="bucket" column="bucket"/>
+        <result property="pathName" column="path_name"/>
+        <result property="mediaType" column="media_type"/>
+        <result property="roomId" column="room_id"/>
+        <result property="roomRecordId" column="room_record_id"/>
+        <result property="duration" column="duration"/>
+        <result property="capacity" column="capacity"/>
+        <result property="image" column="image"/>
+        <result property="convertStatus" column="convert_status"/>
+
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               org_id,
+               name,
+               file_name,
+               bucket,
+               path_name,
+               media_type,
+               room_id,
+               room_record_id,
+               duration,
+               capacity,
+               image,
+               convert_status,
+               deleted,
+               create_time,
+               update_time
+        from t_living_media_lib
+    </sql>
+
+    <select id="findListByOrgId" resultMap="LivingMediaLib">
+        <include refid="selectColumns"/>
+        where org_id = #{orgId} and deleted = 0
+    </select>
+
+    <select id="findListByOrgIdAndNameLike" resultMap="LivingMediaLib">
+        <include refid="selectColumns"/>
+        <where>
+            and deleted = 0
+            <if test="orgId != null">and org_id = #{orgId}</if>
+            <if test="name != null and name !=''">and name like concat('%', #{name},'%')</if>
+        </where>
+    </select>
+    <select id="findById" resultMap="LivingMediaLib">
+        <include refid="selectColumns"/>
+        where id = #{id}
+    </select>
+
+    <select id="totalStorage" resultType="java.lang.Long">
+        select sum(capacity) as storage
+        from t_living_media_lib
+        where org_id = #{orgId}
+    </select>
+
+    <select id="findSameNameMedia" resultMap="LivingMediaLib">
+        <include refid="selectColumns"/>
+        <where>
+            and deleted = 0
+            <if test="orgId != null">and org_id = #{orgId}</if>
+            <if test="name != null and name !=''">and name = #{name}</if>
+        </where>
+        limit 1
+    </select>
+
+
+    <insert id="insert" parameterType="ag.orca.living.core.entity.media.LivingMediaLib" useGeneratedKeys="true"
+            keyProperty="id">
+        insert t_living_media_lib
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orgId != null">org_id,</if>
+
+            <if test="name != null and name != ''">name,</if>
+            <if test="fileName != null and fileName != ''">file_name,</if>
+            <if test="bucket != null and bucket != ''">bucket,</if>
+            <if test="pathName != null and pathName != ''">path_name,</if>
+
+            <if test="mediaType != null">media_type,</if>
+            <if test="roomId != null">room_id,</if>
+            <if test="roomRecordId != null">room_record_id,</if>
+            <if test="duration != null">duration,</if>
+            <if test="capacity != null">capacity,</if>
+            <if test="image != null and image != ''">image,</if>
+            <if test="convertStatus != null">convert_status,</if>
+
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orgId != null">#{orgId},</if>
+
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="fileName != null and fileName != ''">#{fileName},</if>
+            <if test="bucket != null and bucket != ''">#{bucket},</if>
+            <if test="pathName != null and pathName != ''">#{pathName},</if>
+            <if test="mediaType != null">#{mediaType},</if>
+            <if test="roomId != null">#{roomId},</if>
+            <if test="roomRecordId != null">#{roomRecordId},</if>
+            <if test="duration != null">#{duration},</if>
+            <if test="capacity != null">#{capacity},</if>
+            <if test="image != null and image != ''">#{image},</if>
+            <if test="convertStatus != null">#{convertStatus},</if>
+
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+    <update id="update">
+        update t_living_media_lib
+        set
+        <trim suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="fileName != null and fileName != ''">file_name = #{fileName},</if>
+            <if test="duration != null">duration = #{duration},</if>
+            <if test="capacity != null">capacity = #{capacity},</if>
+            <if test="image != null and image != ''">image = #{image},</if>
+            <if test="pathName != null and pathName != ''">path_name = #{pathName},</if>
+            <if test="convertStatus != null">convert_status = #{convertStatus},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+    <update id="logicDel">
+        update t_living_media_lib
+        set deleted = 1 , update_time = #{dateTime}
+        where org_id = #{orgId}
+        and id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+
+    </update>
+
+</mapper>

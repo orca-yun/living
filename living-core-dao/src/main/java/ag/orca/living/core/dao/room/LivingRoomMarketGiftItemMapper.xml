@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.room.LivingRoomMarketGiftItemMapper">
+
+    <resultMap id="LivingRoomMarketGiftItem" type="ag.orca.living.core.entity.room.LivingRoomMarketGiftItem">
+        <result property="id" column="id"/>
+        <result property="orgId" column="org_id"/>
+        <result property="roomId" column="room_id"/>
+
+        <result property="giftLibId" column="gift_lib_id"/>
+        <result property="name" column="name"/>
+        <result property="img" column="img"/>
+        <result property="price" column="price"/>
+        <result property="giftType" column="gift_type"/>
+
+        <result property="status" column="status"/>
+
+        <result property="priority" column="priority"/>
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               org_id,
+               room_id,
+               gift_lib_id,
+               name,
+               img,
+               price,
+               gift_type,
+               status,
+               priority,
+
+               deleted,
+               create_time,
+               update_time
+        from t_living_room_market_gift_item
+    </sql>
+
+    <select id="findById" resultMap="LivingRoomMarketGiftItem">
+        <include refid="selectColumns"/>
+        where
+        id= #{id} and deleted = 0
+    </select>
+
+    <select id="findByIds" resultMap="LivingRoomMarketGiftItem">
+        <include refid="selectColumns"/>
+        where
+        id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <insert id="insert" parameterType="ag.orca.living.core.entity.room.LivingRoomMarketGiftItem"
+            useGeneratedKeys="true" keyProperty="id">
+        insert t_living_room_market_gift_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orgId != null">org_id,</if>
+            <if test="roomId != null">room_id,</if>
+
+            <if test="giftLibId != null">gift_lib_id,</if>
+            <if test="name != null">name,</if>
+            <if test="img != null">img,</if>
+            <if test="price != null">price,</if>
+            <if test="giftType != null">gift_type,</if>
+            <if test="status != null">status,</if>
+            <if test="priority != null">priority,</if>
+
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orgId != null">#{orgId},</if>
+            <if test="roomId != null">#{roomId},</if>
+
+            <if test="giftLibId != null">#{giftLibId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="img != null">#{img},</if>
+            <if test="price != null">#{price},</if>
+            <if test="giftType != null">#{giftType},</if>
+            <if test="status != null">#{status},</if>
+            <if test="priority != null">#{priority},</if>
+
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+
+    <update id="update" parameterType="ag.orca.living.core.entity.room.LivingRoomMarketGiftItem">
+        update t_living_room_market_gift_item
+        set
+        <trim suffixOverrides=",">
+            <if test="orgId != null">org_id = #{orgId},</if>
+            <if test="roomId != null">room_id = #{roomId},</if>
+
+            <if test="giftLibId != null">gift_lib_id = #{giftLibId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="img != null">img = #{img},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="giftType != null">gift_type = #{giftType},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="priority != null">priority = #{priority},</if>
+
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="findListByRoomId" resultMap="LivingRoomMarketGiftItem">
+        <include refid="selectColumns"/>
+        where
+        room_id = #{roomId} and deleted = 0
+    </select>
+
+    <select id="findListByRoomIdAndStatus" resultMap="LivingRoomMarketGiftItem">
+        <include refid="selectColumns"/>
+        where
+        room_id = #{roomId} and deleted = 0
+        and status = #{status}
+    </select>
+    <select id="countGiftWithUsed" resultType="java.lang.Integer">
+        select count(1) from t_living_room_market_gift_item
+        <where>
+            and deleted = 0
+            <if test="giftLibIds != null and giftLibIds.size() > 0">
+                and gift_lib_id in
+                <foreach collection="giftLibIds" open=" (" close=")" separator="," item="glId">
+                    #{glId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <update id="logicDel">
+        update t_living_room_market_gift_item
+        set deleted = 1, update_time = #{dateTime}
+        <where>
+            <if test="orgId != null">and org_id = #{orgId}</if>
+            and id in
+            <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </where>
+
+
+    </update>
+
+    <update id="updateStatusById">
+        update t_living_room_market_gift_item
+        set status      = #{status},
+            update_time = #{dateTime}
+        where id = #{id}
+    </update>
+
+    <update id="updatePriorityById">
+        update t_living_room_market_gift_item
+        set priority    = #{priority},
+            update_time = #{dateTime}
+        where id = #{id}
+    </update>
+
+    <update id="logicDelByRoomId">
+        update t_living_room_market_gift_item
+        set deleted     = 1,
+            update_time = #{dateTime}
+        where room_id = #{roomId}
+    </update>
+
+
+</mapper>

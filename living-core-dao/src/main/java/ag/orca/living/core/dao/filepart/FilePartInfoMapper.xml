@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ag.orca.living.core.dao.filepart.FilePartInfoMapper">
+    <resultMap id="FilePartInfo" type="ag.orca.living.core.entity.filepart.FilePartInfo">
+        <result property="id" column="id"/>
+        <result property="fileId" column="file_id"/>
+        <result property="fileName" column="file_name"/>
+        <result property="bucket" column="bucket"/>
+        <result property="pathName" column="path_name"/>
+        <result property="partNum" column="part_num"/>
+        <result property="partSize" column="part_size"/>
+        <result property="partCrc32" column="part_crc32"/>
+        <result property="etag" column="etag"/>
+        <result property="status" column="status"/>
+
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+    <sql id="selectColumns">
+        select id,
+               file_id,
+               file_name,
+               bucket,
+               path_name,
+               part_num,
+               part_size,
+               part_crc32,
+               etag,
+               status,
+               deleted,
+               create_time,
+               update_time
+        from t_file_part_info
+    </sql>
+
+    <insert id="insert" parameterType="ag.orca.living.core.entity.filepart.FilePartInfo" useGeneratedKeys="true"
+            keyProperty="id">
+        insert t_file_part_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="fileId != null and fileId != ''">file_id,</if>
+            <if test="fileName != null and fileName != ''">file_name,</if>
+            <if test="bucket != null and bucket != ''">bucket,</if>
+            <if test="pathName != null and pathName != ''">path_name,</if>
+            <if test="partNum != null">part_num,</if>
+            <if test="partSize != null">part_size,</if>
+            <if test="partCrc32 != null">part_crc32,</if>
+            <if test="etag != null and etag != ''">etag,</if>
+            <if test="status != null">status,</if>
+
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="fileId != null and fileId != ''">#{fileId},</if>
+            <if test="fileName != null and fileName != ''">#{fileName},</if>
+            <if test="bucket != null and bucket != ''">#{bucket},</if>
+            <if test="pathName != null and pathName != ''">#{pathName},</if>
+            <if test="partNum != null">#{partNum},</if>
+            <if test="partSize != null">#{partSize},</if>
+            <if test="partCrc32 != null">#{partCrc32},</if>
+            <if test="etag != null and etag != ''">#{etag},</if>
+            <if test="status != null">#{status},</if>
+
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <select id="findFilePartInfoListByFileId" resultMap="FilePartInfo">
+        <include refid="selectColumns"/>
+        where file_id = #{fileId}
+    </select>
+
+    <delete id="removeByFileId">
+        delete
+        from t_file_part_info
+        where file_id = #{fileId}
+    </delete>
+
+
+</mapper>

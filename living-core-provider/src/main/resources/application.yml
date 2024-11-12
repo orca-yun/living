@@ -1,0 +1,120 @@
+spring:
+  messages:
+    basename: i18n/messages
+  profiles:
+    active: dev
+    include: ${spring.profiles.active}
+  application:
+    name: live-provider
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mysql:3306/orca_db?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&useTimezone=true&serverTimezone=GMT%2B8
+    password: root
+    username: root
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 20
+      idle-timeout: 30000
+      leak-detection-threshold: 30000
+      connection-timeout: 20000
+      max-lifetime: 120000
+  data:
+    mongodb:
+      uri: mongodb://orca:orcapwd@mongo:27017/orca_db?authSource=admin
+      auto-index-creation: true
+    redis:
+      host: redis
+      port: 6379
+      password: redispwd
+      timeout: 10000ms
+      connect-timeout: 10000ms
+      client-name: ${spring.application.name}
+      lettuce:
+        pool:
+          enabled: true
+          max-active: 10
+          max-idle: 10
+          min-idle: 0
+
+pulsar:
+  address: pulsar://pulsar:6650
+
+# DUBBO
+dubbo:
+  registry:
+    address: nacos://nacos:8848
+  application:
+    logger: slf4j
+    name: ${spring.application.name}
+    qos-enable: off
+  protocol:
+    name: tri
+    port: 50051
+  provider:
+    filter: -exception, providerOrcaExceptionFilter
+
+# 云直播配置
+living:
+  secret-id: [腾讯云 云直播 SecretId]
+  secret-Key:  [腾讯云 云直播 SecretKey]
+  region: [腾讯云 云直播 region]
+  minutes: 14400
+  app-name: live
+  key:  [腾讯云 云直播 推流KEY]
+  push-domain: [腾讯云 云直播 推流域名]
+  trans-code:
+  play-auth: false
+  play-prefix: https
+  play-domain: [腾讯云 云直播 拉流域名]
+  play-key: [腾讯云 云直播 播放KEY]
+  whip-server: https://webrtcpush.tlivesource.com/webrtc/v2/whip
+
+# 端到端的格式化地址
+e2e:
+  # 管理端访问地址
+  admin-format: http://127.0.0.1/app/admin
+  # 主播端访问地址
+  anchor-format: http://127.0.0.1/app/anchor#/broadcast?roomId={0}
+  # 助播端访问地址
+  assistant-format: http://127.0.0.1/app/assistant#/control?roomId={0}
+  # 观看端访问地址
+  share-live-format: http://127.0.0.1/app/audience#home?key={0}
+  share-play-format: http://127.0.0.1/app/audience#home?key={0}
+  # PC 扫码授权成功地址
+  pc-redirect-format: https://127.0.0.1/app/audience#success
+  # 微信 授权跳转地址
+  wx-redirect-format: https://127.0.0.1/app/audience#home?key={0}&auth={1}&token={2}
+
+wx:
+  appid: [微信 APPID]
+  secret: [微信 Secret]
+  call-back: http://127.0.0.1:8003/v3/auth/wx/e2e/callback
+  oauth2-format: https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_userinfo&state={2}#wechat_redirect
+
+
+# S3
+s3:
+  access-key: [S3-ACCESS-KEY]
+  secret-key: [S3-SECRET-KEY]
+  region: [S3 region]
+  default-bucket: img
+
+mybatis:
+  mapper-locations: classpath*:ag/orca/**/dao/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+    lazy-loading-enabled: true
+    multiple-result-sets-enabled: true
+    use-column-label: true
+    use-generated-keys: false
+    default-executor-type: simple
+    default-fetch-size: 100
+    default-statement-timeout: 30
+
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql

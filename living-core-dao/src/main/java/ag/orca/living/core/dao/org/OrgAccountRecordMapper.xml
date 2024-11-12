@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.org.OrgAccountRecordMapper">
+    <resultMap id="OrgAccountRecord" type="ag.orca.living.core.entity.org.OrgAccountRecord">
+        <result property="id" column="id"/>
+        <result property="orgId" column="org_id"/>
+        <result property="accountId" column="account_id"/>
+        <result property="eventTime" column="event_time"/>
+        <result property="recordNo" column="record_no"/>
+        <result property="bizNo" column="biz_no"/>
+        <result property="beforeBalance" column="before_balance"/>
+        <result property="afterBalance" column="after_balance"/>
+        <result property="amount" column="amount"/>
+        <result property="recordType" column="record_type"/>
+        <result property="remark" column="remark"/>
+        <result property="recordName" column="record_name"/>
+
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               org_id,
+               account_id,
+               event_time,
+               record_no,
+               biz_no,
+               before_balance,
+               after_balance,
+               amount,
+               record_type,
+               remark,
+               record_name,
+               deleted,
+               create_time,
+               update_time
+        from t_org_account_record
+    </sql>
+
+    <insert id="insert" parameterType="ag.orca.living.core.entity.org.OrgAccountRecord"
+            useGeneratedKeys="true" keyColumn="id">
+        insert t_org_account_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+
+            <if test="orgId != null">org_id,</if>
+            <if test="accountId != null">account_id,</if>
+            <if test="eventTime != null">event_time,</if>
+            <if test="recordNo != null">record_no,</if>
+            <if test="bizNo != null">biz_no,</if>
+            <if test="beforeBalance != null">before_balance,</if>
+            <if test="afterBalance != null">after_balance,</if>
+            <if test="amount != null">amount,</if>
+            <if test="recordType != null">record_type,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="recordName != null and recordName != ''">record_name,</if>
+
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orgId != null">#{orgId},</if>
+
+            <if test="accountId != null">#{accountId},</if>
+            <if test="eventTime != null">#{eventTime},</if>
+            <if test="recordNo != null">#{recordNo},</if>
+            <if test="bizNo != null">#{bizNo},</if>
+            <if test="beforeBalance != null">#{beforeBalance},</if>
+            <if test="afterBalance != null">#{afterBalance},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="recordType != null">#{recordType},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="recordName != null and recordName != ''">#{recordName},</if>
+
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <select id="findListByAccountIdAndRecordType" resultMap="OrgAccountRecord">
+        <include refid="selectColumns"/>
+        <where>
+            deleted = 0
+            <if test="accountId != null">
+                and account_id = #{accountId}
+            </if>
+            <if test="recordType != null">
+                and record_type = #{recordType}
+            </if>
+        </where>
+
+    </select>
+
+    <select id="findListByOrgIdAndRecordType" resultMap="OrgAccountRecord">
+        <include refid="selectColumns"/>
+        <where>
+            deleted = 0
+            <if test="orgId != null">
+                and org_id = #{orgId}
+            </if>
+            <if test="recordType != null">
+                and record_type = #{recordType}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

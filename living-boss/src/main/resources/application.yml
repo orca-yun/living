@@ -1,0 +1,60 @@
+server:
+  port: 8005
+
+spring:
+  messages:
+    basename: i18n/messages
+  profiles:
+    active: dev
+    include: ${spring.profiles.active}
+  application:
+    name: live-boss
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mysql:3306/orca_db?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&useTimezone=true&serverTimezone=GMT%2B8
+    password: root
+    username: root
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 20
+      idle-timeout: 30000
+      leak-detection-threshold: 30000
+      connection-timeout: 20000
+      max-lifetime: 120000
+
+# dubbo
+dubbo:
+  registry:
+    address: nacos://nacos:8848
+  application:
+    logger: slf4j
+    name: ${spring.application.name}
+    qos-enable: off
+
+
+# jwt
+jwt:
+  # 注意各端保持一致
+  secret:  [JWT SECRET]
+  # 单位 days
+  expiration-time: 7
+  token-prefix: Bearer
+  header-string: Authorization
+
+# spring doc
+springdoc:
+  api-info:
+    name: ${spring.application.name}
+    version: 1.0.0
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /api-docs
+    enabled: true
+    groups:
+      enabled: true
+  packages-to-scan: ag.orca
+  group-configs:
+    - group: 普通接口
+      paths-to-match:
+        - /v4/**

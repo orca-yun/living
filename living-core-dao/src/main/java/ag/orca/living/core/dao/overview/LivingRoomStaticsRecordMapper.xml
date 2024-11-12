@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.overview.LivingRoomStaticsRecordMapper">
+    <resultMap id="LivingRoomStaticsRecord" type="ag.orca.living.core.entity.overview.LivingRoomStaticsRecord">
+        <result property="id" column="id"/>
+        <result property="statTime" column="stat_time"/>
+        <result property="orgId" column="org_id"/>
+        <result property="roomId" column="room_id"/>
+        <result property="roomRecordId" column="room_record_id"/>
+        <result property="viewPageNum" column="view_page_num"/>
+        <result property="onlineNum" column="online_num"/>
+        <result property="offlineNum" column="offline_num"/>
+        <result property="senderNum" column="sender_num"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="giftNum" column="gift_num"/>
+        <result property="msgNum" column="msg_num"/>
+        <result property="waitOrderNum" column="wait_order_num"/>
+        <result property="payedOrderNum" column="payed_order_num"/>
+        <result property="cancelOrderNum" column="cancel_order_num"/>
+        <result property="timeoutOrderNum" column="timeout_order_num"/>
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               stat_time,
+               org_id,
+               room_id,
+               room_record_id,
+               view_page_num,
+               online_num,
+               offline_num,
+               sender_num,
+               order_num,
+               gift_num,
+               msg_num,
+               wait_order_num,
+               payed_order_num,
+               cancel_order_num,
+               timeout_order_num,
+               deleted,
+               create_time,
+               update_time
+        from t_room_statics_record
+    </sql>
+
+    <select id="findListByRoomIdAndDateBetween"
+            resultMap="LivingRoomStaticsRecord">
+        <include refid="selectColumns"/>
+        <where>
+            and deleted = 0
+            <if test="roomId != null">and room_id = #{roomId}</if>
+            <if test="roomRecordId != null">and room_record_id = #{roomRecordId}</if>
+            <if test="start != null">and stat_time >= #{start}</if>
+            <if test="stop != null">and #{stop} >= stat_time</if>
+        </where>
+    </select>
+
+    <insert id="insertOrUpdate" parameterType="ag.orca.living.core.entity.overview.LivingRoomStaticsRecord">
+        insert into t_room_statics_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="statTime != null">stat_time,</if>
+            <if test="orgId != null">org_id,</if>
+            <if test="roomId != null">room_id,</if>
+            <if test="roomRecordId != null">room_record_id,</if>
+            <if test="viewPageNum != null">view_page_num,</if>
+            <if test="onlineNum != null">online_num,</if>
+            <if test="offlineNum != null">offline_num,</if>
+            <if test="senderNum != null">sender_num,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="giftNum != null">gift_num,</if>
+            <if test="msgNum != null">msg_num,</if>
+
+            <if test="waitOrderNum != null">wait_order_num,</if>
+            <if test="payedOrderNum != null">payed_order_num,</if>
+            <if test="cancelOrderNum != null">cancel_order_num,</if>
+            <if test="timeoutOrderNum != null">timeout_order_num,</if>
+
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="statTime != null">#{statTime},</if>
+            <if test="orgId != null">#{orgId},</if>
+            <if test="roomId != null">#{roomId},</if>
+            <if test="roomRecordId != null">#{roomRecordId},</if>
+            <if test="viewPageNum != null">#{viewPageNum},</if>
+            <if test="onlineNum != null">#{onlineNum},</if>
+            <if test="offlineNum != null">#{offlineNum},</if>
+            <if test="senderNum != null">#{senderNum},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="giftNum != null">#{giftNum},</if>
+            <if test="msgNum != null">#{msgNum},</if>
+
+            <if test="waitOrderNum != null">#{waitOrderNum},</if>
+            <if test="payedOrderNum != null">#{payedOrderNum},</if>
+            <if test="cancelOrderNum != null">#{cancelOrderNum},</if>
+            <if test="timeoutOrderNum != null">#{timeoutOrderNum},</if>
+
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+
+        <trim prefix="on duplicate key update" suffixOverrides=",">
+
+            <if test="viewPageNum != null">view_page_num = values(view_page_num),</if>
+            <if test="onlineNum != null">online_num = values(online_num),</if>
+            <if test="offlineNum != null">offline_num = values(offline_num),</if>
+
+            <if test="senderNum != null">sender_num = values(sender_num),</if>
+            <if test="orderNum != null">order_num = values(order_num),</if>
+            <if test="giftNum != null">gift_num = values(gift_num),</if>
+            <if test="msgNum != null">msg_num = values(msg_num),</if>
+
+            <if test="waitOrderNum != null">wait_order_num = values(wait_order_num),</if>
+            <if test="payedOrderNum != null">payed_order_num = values(payed_order_num),</if>
+            <if test="cancelOrderNum != null">cancel_order_num = values(cancel_order_num),</if>
+            <if test="timeoutOrderNum != null">timeout_order_num = values(timeout_order_num),</if>
+
+            <if test="updateTime != null">update_time = values(update_time),</if>
+
+        </trim>
+
+    </insert>
+
+
+    <resultMap id="LivingRoomStaticsItemVo" type="ag.orca.living.core.vo.stats.LivingRoomStaticsItemVo">
+        <result property="statTime" column="stat_time"/>
+        <result property="viewPageNum" column="view_page_num"/>
+        <result property="onlineNum" column="online_num"/>
+        <result property="offlineNum" column="offline_num"/>
+        <result property="senderNum" column="sender_num"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="giftNum" column="gift_num"/>
+        <result property="msgNum" column="msg_num"/>
+        <result property="waitOrderNum" column="wait_order_num"/>
+        <result property="payedOrderNum" column="payed_order_num"/>
+        <result property="cancelOrderNum" column="cancel_order_num"/>
+        <result property="timeoutOrderNum" column="timeout_order_num"/>
+    </resultMap>
+
+    <select id="roomTrend" resultMap="LivingRoomStaticsItemVo">
+        select
+        stat_time,
+        sum(view_page_num) as view_page_num,
+        sum(online_num) as online_num,
+        sum(offline_num) as offline_num,
+        sum(sender_num) as sender_num,
+        sum(order_num) as order_num,
+        sum(gift_num) as gift_num,
+        sum(msg_num) as msg_num,
+        sum(wait_order_num) as wait_order_num,
+        sum(payed_order_num) as payed_order_num,
+        sum(cancel_order_num) as cancel_order_num,
+        sum(timeout_order_num) as timeout_order_num
+        from t_room_statics_record
+        <where>
+            and deleted = 0
+            <if test="orgId != null">and org_id = #{orgId}</if>
+            <if test="start != null">and stat_time >= #{start}</if>
+            <if test="stop != null">and #{stop} >= stat_time</if>
+            <if test="roomIds != null and roomIds.size() > 0">
+                and room_id in
+                <foreach collection="roomIds" item="roomId" open="(" close=")" separator=",">
+                    #{roomId}
+                </foreach>
+            </if>
+        </where>
+        group by stat_time
+    </select>
+
+    <select id="maxOnlineNum" resultType="java.lang.Long">
+        with t as (
+        select
+        sum(online_num) as online_num,
+        stat_time
+        from t_room_statics_record
+        <where>
+            and deleted = 0
+            <if test="orgId != null">and org_id = #{orgId}</if>
+            <if test="start != null">and stat_time >= #{start}</if>
+            <if test="stop != null">and #{stop} >= stat_time</if>
+            <if test="roomIds != null and roomIds.size() > 0">
+                and room_id in
+                <foreach collection="roomIds" item="roomId" open="(" close=")" separator=",">
+                    #{roomId}
+                </foreach>
+            </if>
+        </where>
+        group by stat_time
+        )
+        select max(online_num) from t
+    </select>
+
+    <select id="totalLiveUv" resultType="java.lang.Long">
+        with t as (select sum(online_num + offline_num)      as live_num,
+                          date_format(stat_time, '%Y-%m-%e') as d
+                   from t_room_statics_record
+                   where deleted = 0
+                     and org_id = #{orgId}
+                   group by stat_time),
+             m as (select d,
+                          max(live_num) as day_live_uv
+                   from t
+                   group by d)
+        select sum(day_live_uv) as live_num
+        from m
+
+    </select>
+
+</mapper>

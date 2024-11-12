@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.room.LivingRoomShortUrlMapper">
+
+    <resultMap id="LivingRoomShortUrl" type="ag.orca.living.core.entity.room.LivingRoomShortUrl">
+        <result property="id" column="id"/>
+        <result property="orgId" column="org_id"/>
+        <result property="roomId" column="room_id"/>
+
+        <result property="channelId" column="channel_id"/>
+        <result property="randomStr" column="random_str"/>
+
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               org_id,
+               room_id,
+               channel_id,
+               random_str,
+               deleted,
+               create_time,
+               update_time
+        from t_living_room_short_url
+    </sql>
+
+    <insert id="insert" parameterType="ag.orca.living.core.entity.room.LivingRoomShortUrl" useGeneratedKeys="true"
+            keyProperty="id">
+        insert t_living_room_short_url
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orgId != null">org_id,</if>
+            <if test="roomId != null">room_id,</if>
+            <if test="channelId != null">channel_id,</if>
+            <if test="randomStr != null and randomStr != ''">random_str,</if>
+
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orgId != null">#{orgId},</if>
+            <if test="roomId != null">#{roomId},</if>
+            <if test="channelId != null">#{channelId},</if>
+            <if test="randomStr != null">#{randomStr},</if>
+
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+    <select id="findFirstByRandomStr" resultMap="LivingRoomShortUrl">
+        <include refid="selectColumns"/>
+        where random_str = #{randomStr} and deleted = 0 limit 1
+    </select>
+    <select id="findFirstByRoomIdAndChannelId" resultMap="LivingRoomShortUrl">
+        <include refid="selectColumns"/>
+        where room_id = #{roomId} and channel_id = #{channelId} and deleted = 0 limit 1
+    </select>
+
+
+</mapper>

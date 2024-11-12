@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.sys.SysTlpayMapper">
+
+
+    <resultMap id="SysTlpay" type="ag.orca.living.core.entity.sys.SysTlpay">
+        <result property="id" column="id"/>
+        <result property="cusId" column="cus_id"/>
+        <result property="appId" column="app_id"/>
+        <result property="wxAppId" column="wx_app_id"/>
+        <result property="apiBaseUrl" column="api_base_url"/>
+        <result property="signType" column="sign_type"/>
+        <result property="version" column="version"/>
+        <result property="mchRsaPriKey" column="mch_rsa_pri_key"/>
+        <result property="tlRsaPubKey" column="tl_rsa_pub_key"/>
+        <result property="notify" column="notify"/>
+        <result property="valid" column="valid"/>
+
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               cus_id,
+               app_id,
+               wx_app_id,
+               api_base_url,
+               sign_type,
+               version,
+               mch_rsa_pri_key,
+               tl_rsa_pub_key,
+               notify,
+               valid,
+
+               deleted,
+               create_time,
+               update_time
+        from t_sys_tlpay
+    </sql>
+    <select id="findAll" resultMap="SysTlpay">
+        <include refid="selectColumns"/>
+    </select>
+
+
+</mapper>

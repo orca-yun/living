@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ag.orca.living.core.dao.control.ControlAtmosphereFieldMapper">
+
+    <resultMap id="ControlAtmosphereField" type="ag.orca.living.core.entity.control.ControlAtmosphereField">
+        <id property="id" column="id"/>
+        <result property="orgId" column="org_id"/>
+        <result property="roomId" column="room_id"/>
+        <result property="textContent" column="text_content"/>
+        <result property="giftContent" column="gift_content"/>
+        <result property="quantity" column="quantity"/>
+        <result property="textInterval" column="text_interval"/>
+        <result property="giftInterval" column="gift_interval"/>
+        <result property="execStatus" column="exec_status"/>
+        <result property="expEndTime" column="exp_end_time"/>
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               org_id,
+               room_id,
+               text_content,
+               gift_content,
+               quantity,
+               text_interval,
+               gift_interval,
+               exec_status,
+               exp_end_time,
+               deleted,
+               create_time,
+               update_time
+        from t_control_atmosphere_field
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ControlAtmosphereField">
+        <include refid="selectColumns"/>
+        where id = #{id}
+    </select>
+
+    <select id="findLatestControlByRoomId"
+            resultMap="ControlAtmosphereField">
+        <include refid="selectColumns"/>
+        where room_id = #{roomId}
+        and deleted = 0
+        order by create_time desc
+        limit 1
+    </select>
+
+    <insert id="insertSelective" keyProperty="id"
+            parameterType="ag.orca.living.core.entity.control.ControlAtmosphereField"
+            useGeneratedKeys="true">
+        insert into t_control_atmosphere_field
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orgId != null">org_id,</if>
+            <if test="roomId != null">room_id,</if>
+            <if test="textContent != null">text_content,</if>
+            <if test="giftContent != null">gift_content,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="textInterval != null">text_interval,</if>
+            <if test="giftInterval != null">gift_interval,</if>
+            <if test="execStatus != null">exec_status,</if>
+            <if test="expEndTime != null">exp_end_time,</if>
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orgId != null">#{orgId},</if>
+            <if test="roomId != null">#{roomId},</if>
+            <if test="textContent != null">#{textContent},</if>
+            <if test="giftContent != null">#{giftContent},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="textInterval != null">#{textInterval},</if>
+            <if test="giftInterval != null">#{giftInterval},</if>
+            <if test="execStatus != null">#{execStatus},</if>
+            <if test="expEndTime != null">#{expEndTime},</if>
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="ag.orca.living.core.entity.control.ControlAtmosphereField">
+        update t_control_atmosphere_field
+        <set>
+            <if test="orgId != null">
+                org_id = #{orgId},
+            </if>
+            <if test="roomId != null">
+                room_id = #{roomId},
+            </if>
+            <if test="textContent != null">
+                text_content = #{textContent},
+            </if>
+            <if test="giftContent != null">
+                gift_content = #{giftContent},
+            </if>
+            <if test="quantity != null">
+                quantity = #{quantity},
+            </if>
+            <if test="textInterval != null">
+                text_interval = #{textInterval},
+            </if>
+            <if test="giftInterval != null">
+                gift_interval = #{giftInterval},
+            </if>
+            <if test="execStatus != null">
+                exec_status = #{execStatus},
+            </if>
+            <if test="expEndTime != null">
+                exp_end_time = #{expEndTime},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateExecStatusStoppedById">
+        update t_control_atmosphere_field
+        set exec_status = 0
+        where id = #{id}
+          and deleted = 0
+          and exec_status = 1
+    </update>
+</mapper>

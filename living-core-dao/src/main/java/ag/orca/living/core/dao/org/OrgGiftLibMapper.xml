@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.org.OrgGiftLibMapper">
+
+    <resultMap id="OrgGiftLib" type="ag.orca.living.core.entity.org.OrgGiftLib">
+        <result property="id" column="id"/>
+        <result property="orgId" column="org_id"/>
+
+        <result property="name" column="name"/>
+        <result property="img" column="img"/>
+        <result property="price" column="price"/>
+        <result property="giftType" column="gift_type"/>
+
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               org_id,
+               name,
+               img,
+               price,
+               gift_type,
+               deleted,
+               create_time,
+               update_time
+        from t_org_gift_lib
+    </sql>
+
+    <insert id="insert" parameterType="ag.orca.living.core.entity.org.OrgGiftLib" keyProperty="id"
+            useGeneratedKeys="true">
+        insert t_org_gift_lib
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orgId != null">org_id,</if>
+
+            <if test="name != null and name != ''">name,</if>
+            <if test="img != null and img != ''">img,</if>
+            <if test="price != null">price,</if>
+            <if test="giftType != null">gift_type,</if>
+
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orgId != null">#{orgId},</if>
+
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="img != null and img != ''">#{img},</if>
+            <if test="price != null">#{price},</if>
+            <if test="giftType != null">#{giftType},</if>
+
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+
+    </insert>
+    <insert id="batchInsert">
+        insert t_org_gift_lib(org_id, name, img, price, gift_type, deleted, create_time, update_time)
+        values
+        <if test="gifts != null and gifts.size()>0">
+            <foreach collection="gifts" open="" close="" separator="," item="gift">
+                ( #{gift.orgId}, #{gift.name}, #{gift.img}, #{gift.price}, #{gift.giftType}, #{gift.deleted},
+                #{gift.createTime}, #{gift.updateTime} )
+            </foreach>
+        </if>
+    </insert>
+
+    <update id="logicDel">
+        update t_org_gift_lib
+        set deleted = 1, update_time = #{dateTime}
+        where org_id = #{orgId}
+        and id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <update id="update" parameterType="ag.orca.living.core.entity.org.OrgGiftLib">
+        update t_org_gift_lib
+        set
+        <trim suffixOverrides=",">
+            <if test="orgId != null">org_id = #{orgId},</if>
+
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="img != null and img != ''">img = #{img},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="giftType != null">gift_type = #{giftType},</if>
+
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="findListByOrgId" resultMap="OrgGiftLib">
+        <include refid="selectColumns"/>
+        where org_id = #{orgId} and deleted = 0
+    </select>
+    <select id="findById" resultMap="OrgGiftLib">
+        <include refid="selectColumns"/>
+        where id = #{id} and deleted = 0
+    </select>
+    <select id="findListByOrgIdAndNameLike" resultMap="OrgGiftLib">
+        <include refid="selectColumns"/>
+        <where>
+            and deleted = 0
+            <if test="orgId != null">and org_id = #{orgId}</if>
+            <if test="name != null and name !=''">and name like concat('%',#{name},'%')</if>
+        </where>
+    </select>
+    <select id="findSameNameGift" resultMap="OrgGiftLib">
+        <include refid="selectColumns"/>
+        <where>
+            and deleted = 0
+            <if test="orgId != null">and org_id = #{orgId}</if>
+            <if test="name != null and name !=''">and name = #{name}</if>
+        </where>
+        limit 1
+    </select>
+
+</mapper>

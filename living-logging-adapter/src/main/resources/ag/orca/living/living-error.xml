@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<included>
+    <property name="ERROR_LOG_PATTERN"
+              value="[${app.name}, %level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread]%logger %method[%line] %m%n"/>
+
+    <appender name="err_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}/${app.name}-err.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${log.path}/${app.name}-err.%d{yyyy-MM-dd}.log.%i</fileNamePattern>
+            <totalSizeCap>${total_size_cap}</totalSizeCap>
+            <maxHistory>${max_file_history}</maxHistory>
+            <maxFileSize>${max_file_size}</maxFileSize>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>${ERROR_LOG_PATTERN}</pattern>
+        </layout>
+    </appender>
+</included>

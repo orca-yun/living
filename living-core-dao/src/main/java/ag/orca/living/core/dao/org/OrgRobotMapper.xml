@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.org.OrgRobotMapper">
+
+
+    <resultMap id="OrgRobot" type="ag.orca.living.core.entity.org.OrgRobot">
+        <result property="id" column="id"/>
+        <result property="orgId" column="org_id"/>
+
+        <result property="code" column="code"/>
+        <result property="nickname" column="nickname"/>
+        <result property="headIco" column="head_ico"/>
+
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               org_id,
+               code,
+               nickname,
+               head_ico,
+               deleted,
+               create_time,
+               update_time
+        from t_org_robot
+    </sql>
+
+
+    <insert id="insert" parameterType="ag.orca.living.core.entity.org.OrgRobot" useGeneratedKeys="true"
+            keyProperty="id">
+        insert t_org_robot
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orgId != null">org_id,</if>
+
+            <if test="code != null and code != ''">code,</if>
+            <if test="nickname != null and nickname != ''">nickname,</if>
+            <if test="headIco != null">head_ico,</if>
+
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orgId != null">#{orgId},</if>
+
+            <if test="code != null and code != ''">#{code},</if>
+            <if test="nickname != null and nickname != ''">#{nickname},</if>
+            <if test="headIco != null">#{headIco},</if>
+
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+
+    </insert>
+    <insert id="batchInsert">
+        insert t_org_robot(org_id, code, nickname, head_ico, deleted, create_time, update_time)
+        values
+        <if test="robots != null and robots.size()>0">
+            <foreach collection="robots" open="" close="" separator="," item="robot">
+                ( #{robot.orgId}, #{robot.code}, #{robot.nickname}, #{robot.headIco}, #{robot.deleted},
+                #{robot.createTime}, #{robot.updateTime} )
+            </foreach>
+        </if>
+    </insert>
+
+    <update id="logicDel">
+        update t_org_robot
+        set deleted = 1, update_time = #{dateTime}
+        where org_id = #{orgId}
+        and id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <update id="update" parameterType="ag.orca.living.core.entity.org.OrgRobot">
+        update t_org_robot
+        set
+        <trim suffixOverrides=",">
+            <if test="orgId != null">org_id = #{orgId},</if>
+
+            <if test="code != null and code != ''">code = #{code},</if>
+            <if test="nickname != null and nickname != ''">nickname = #{nickname},</if>
+            <if test="headIco != null">head_ico = #{headIco},</if>
+
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="findListByOrgId" resultMap="OrgRobot">
+        <include refid="selectColumns"/>
+        where org_id = #{orgId} and deleted = 0
+    </select>
+
+    <select id="countByOrgId" resultType="java.lang.Integer">
+        select count(1)
+        from t_org_robot
+        where org_id = #{orgId}
+          and deleted = 0
+    </select>
+
+    <select id="findById" resultMap="OrgRobot">
+        <include refid="selectColumns"/>
+        where id = #{id} and deleted = 0
+    </select>
+    <select id="findListByOrgIdAndNicknameLike" resultMap="OrgRobot">
+        <include refid="selectColumns"/>
+        <where>
+            and deleted = 0
+            <if test="orgId != null">and org_id = #{orgId}</if>
+            <if test="nickname != null and nickname !=''">and nickname like concat('%', #{nickname},'%')</if>
+        </where>
+    </select>
+
+    <select id="findByIds" resultMap="OrgRobot">
+        <include refid="selectColumns"/>
+        <where>
+            <if test="ids != null and ids.size() > 0">
+                id in
+                <foreach collection="ids" item="id" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+            and deleted = 0
+        </where>
+    </select>
+
+    <select id="findSameNickNameRobot" resultMap="OrgRobot">
+        <include refid="selectColumns"/>
+        <where>
+            and deleted = 0
+            <if test="orgId != null">and org_id = #{orgId}</if>
+            <if test="nickname != null and nickname !=''">and nickname = #{nickname}</if>
+        </where>
+    </select>
+
+</mapper>

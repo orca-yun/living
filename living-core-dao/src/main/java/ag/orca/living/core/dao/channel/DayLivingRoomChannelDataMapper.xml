@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.channel.DayLivingRoomChannelDataMapper">
+
+    <resultMap id="DayLiveRoomChannelData" type="ag.orca.living.core.entity.channel.DayLiveRoomChannelData">
+        <result property="id" column="id"/>
+        <result property="roomId" column="room_id"/>
+        <result property="liveRecordId" column="live_record_id"/>
+        <result property="channelId" column="channel_id"/>
+        <result property="channelName" column="channel_name"/>
+        <result property="flowPeople" column="flow_people"/>
+        <result property="transactionAmount" column="transaction_amount"/>
+        <result property="subCommission" column="sub_commission"/>
+        <result property="commissionRatio" column="commission_ratio"/>
+        <result property="day" column="day"/>
+
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               room_id,
+               live_record_id,
+               channel_id,
+               channel_name,
+               flow_people,
+               transaction_amount,
+               sub_commission,
+               commission_ratio,
+               `day`,
+
+               deleted,
+               create_time,
+               update_time
+        from t_day_living_room_channel_data
+    </sql>
+
+
+    <insert id="batchInsertOrUpdate">
+        insert into t_day_living_room_channel_data
+        (room_id, live_record_id, channel_id, channel_name,
+        flow_people, transaction_amount, sub_commission, commission_ratio,
+        day, deleted, create_time, update_time) values
+        <foreach collection="items" item="item" open="" close="" separator=",">
+            (#{item.roomId}, #{item.liveRecordId}, #{item.channelId}, #{item.channelName},
+            #{item.flowPeople}, #{item.transactionAmount}, #{item.subCommission}, #{item.commissionRatio},
+            #{item.day}, #{item.deleted}, #{item.createTime}, #{item.updateTime})
+        </foreach>
+        on duplicate key update live_record_id = values(live_record_id),
+        flow_people = values(flow_people),
+        transaction_amount = values(transaction_amount),
+        sub_commission = values(sub_commission),
+        commission_ratio = values(commission_ratio),
+        update_time = values(update_time)
+    </insert>
+
+    <select id="livingDimensionBoard" resultType="ag.orca.living.core.vo.channel.ChannelDataBoardVo">
+        select sum(flow_people)        as totalFlowPeople,
+               sum(transaction_amount) as totalTransactionAmount,
+               sum(sub_commission)     as totalSubCommission
+        from t_day_living_room_channel_data
+        where deleted = 0
+          and room_id = #{roomId}
+    </select>
+
+
+    <select id="findPageByLivingDimension" resultType="ag.orca.living.core.vo.channel.ChannelDataDetailVo">
+        select channel_id as channelId,
+        channel_name as channelName,
+        sum(flow_people) as flowPeople,
+        sum(transaction_amount) as transactionAmount,
+        sum(sub_commission) as subCommission,
+        avg(commission_ratio) as commissionRatio
+        from t_day_living_room_channel_data
+        where deleted = 0 and room_id = #{roomId}
+        group by channel_id
+        <choose>
+            <when test="flowSort == null and amountSort == null">
+
+            </when>
+            <when test="flowSort != null and amountSort == null">
+                order by flowPeople
+                <if test="flowSort == 1">desc</if>
+            </when>
+            <when test="flowSort == null and amountSort != null">
+                order by transactionAmount
+                <if test="amountSort == 1">desc</if>
+            </when>
+            <when test="flowSort != null and amountSort != null">
+                order by flowPeople
+                <if test="flowSort == 1">desc</if>
+                ,transactionAmount
+                <if test="amountSort == 1">desc</if>
+            </when>
+        </choose>
+
+    </select>
+
+    <select id="findPageByTimeDimensionRoomDetail" resultMap="DayLiveRoomChannelData">
+        <include refid="selectColumns"/>
+        <where>
+            and deleted = 0
+            <if test="channelId != null">and channel_id = #{channelId}</if>
+            <if test="date != null">and `day` = #{date}</if>
+        </where>
+    </select>
+
+
+</mapper>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.stream.LivingCoursewareItemMapper">
+
+
+    <resultMap id="LivingCoursewareItem" type="ag.orca.living.core.entity.stream.LivingCoursewareItem">
+        <result property="id" column="id"/>
+        <result property="orgId" column="org_id"/>
+        <result property="roomId" column="room_id"/>
+
+        <result property="coursewareId" column="courseware_id"/>
+        <result property="image" column="image"/>
+
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               org_id,
+               room_id,
+               courseware_id,
+               image,
+               deleted,
+               create_time,
+               update_time
+        from t_living_room_courseware_item
+    </sql>
+
+
+    <insert id="insert" parameterType="ag.orca.living.core.entity.stream.LivingCoursewareItem" useGeneratedKeys="true"
+            keyProperty="id">
+        insert t_living_room_courseware_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orgId != null">org_id,</if>
+            <if test="roomId != null">room_id,</if>
+
+            <if test="coursewareId != null">courseware_id,</if>
+            <if test="image != null and image != ''">image,</if>
+
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orgId != null">#{orgId},</if>
+            <if test="roomId != null">#{roomId},</if>
+            <if test="coursewareId != null">#{coursewareId},</if>
+            <if test="image != null and image != ''">#{image},</if>
+
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+    <update id="logicRemoveCoursewareItemByCoursewareId">
+        update t_living_room_courseware_item
+        set deleted     = 1,
+            update_time = #{dateTime}
+        where courseware_id = #{coursewareId}
+    </update>
+
+    <select id="findListByRoomId" resultMap="LivingCoursewareItem">
+        <include refid="selectColumns"/>
+        where room_id = #{roomId} and deleted = 0
+    </select>
+
+</mapper>

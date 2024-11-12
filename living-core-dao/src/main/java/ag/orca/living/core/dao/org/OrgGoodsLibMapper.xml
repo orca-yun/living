@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.org.OrgGoodsLibMapper">
+
+    <resultMap id="OrgGoodsLib" type="ag.orca.living.core.entity.org.OrgGoodsLib">
+        <result property="id" column="id"/>
+        <result property="orgId" column="org_id"/>
+
+        <result property="name" column="name"/>
+        <result property="img" column="img"/>
+        <result property="goodType" column="good_type"/>
+        <result property="originalPrice" column="original_price"/>
+        <result property="price" column="price"/>
+        <result property="payType" column="pay_type"/>
+        <result property="miniPage" column="mini_page"/>
+        <result property="jumpPage" column="jump_page"/>
+        <result property="qrcode" column="qrcode"/>
+        <result property="bounds" column="bounds"/>
+
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               org_id,
+
+               name,
+               img,
+               good_type,
+               original_price,
+               price,
+               pay_type,
+               mini_page,
+               jump_page,
+               qrcode,
+               bounds,
+
+               deleted,
+               create_time,
+               update_time
+        from t_org_goods_lib
+    </sql>
+
+    <insert id="insert" parameterType="ag.orca.living.core.entity.org.OrgGoodsLib" useGeneratedKeys="true"
+            keyProperty="id">
+        insert t_org_goods_lib
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orgId != null">org_id,</if>
+
+            <if test="name != null and name != ''">name,</if>
+            <if test="img != null and img != ''">img,</if>
+            <if test="goodType != null">good_type,</if>
+            <if test="originalPrice != null">original_price,</if>
+            <if test="price != null">price,</if>
+            <if test="payType != null">pay_type,</if>
+            <if test="miniPage != null and miniPage != ''">mini_page,</if>
+            <if test="jumpPage != null and jumpPage != ''">jump_page,</if>
+            <if test="qrcode != null and qrcode != ''">qrcode,</if>
+            <if test="bounds != null">bounds,</if>
+
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orgId != null">#{orgId},</if>
+
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="img != null and img != ''">#{img},</if>
+            <if test="goodType != null">#{goodType},</if>
+            <if test="originalPrice != null">#{originalPrice},</if>
+            <if test="price != null">#{price},</if>
+            <if test="payType != null">#{payType},</if>
+            <if test="miniPage != null and miniPage != ''">#{miniPage},</if>
+            <if test="jumpPage != null and jumpPage != ''">#{jumpPage},</if>
+            <if test="qrcode != null and qrcode != ''">#{qrcode},</if>
+            <if test="bounds != null">#{bounds},</if>
+
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="logicDel">
+        update t_org_goods_lib
+        set deleted = 1, update_time = #{dateTime}
+        where org_id = #{orgId}
+        and id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <update id="update" parameterType="ag.orca.living.core.entity.org.OrgGoodsLib">
+        update t_org_goods_lib
+        set
+        <trim suffixOverrides=",">
+            <if test="orgId != null">org_id = #{orgId},</if>
+
+            <if test="name != null and name != ''">name= #{name},</if>
+            <if test="img != null and img != ''">img = #{img},</if>
+            <if test="goodType != null">good_type = #{goodType},</if>
+            <if test="originalPrice != null">original_price = #{originalPrice},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="payType != null">pay_type = #{payType},</if>
+            <if test="miniPage != null and miniPage != ''">mini_page = #{miniPage},</if>
+            <if test="jumpPage != null and jumpPage != ''">jump_page = #{jumpPage},</if>
+            <if test="qrcode != null and qrcode != ''">qrcode = #{qrcode},</if>
+            <if test="bounds != null">bounds = #{bounds},</if>
+
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="findListByOrgId" resultMap="OrgGoodsLib">
+        <include refid="selectColumns"/>
+        where org_id = #{orgId} and deleted = 0
+    </select>
+    <select id="findListByOrgIdAndNameLike" resultMap="OrgGoodsLib">
+        <include refid="selectColumns"/>
+        <where>
+            and deleted = 0
+            <if test="orgId != null">and org_id = #{orgId}</if>
+            <if test="name != null and name !=''">and name like concat('%',#{name},'%')</if>
+        </where>
+    </select>
+
+    <select id="findListByIds" resultMap="OrgGoodsLib">
+        <include refid="selectColumns"/>
+        where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+    <select id="findSameNameGoods" resultMap="OrgGoodsLib">
+        <include refid="selectColumns"/>
+        <where>
+            and deleted = 0
+            <if test="orgId != null">and org_id = #{orgId}</if>
+            <if test="name != null and name !=''">and name = #{name}</if>
+        </where>
+        limit 1
+    </select>
+
+
+</mapper>

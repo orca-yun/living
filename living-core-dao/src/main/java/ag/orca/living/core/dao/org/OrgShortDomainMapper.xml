@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.org.OrgShortDomainMapper">
+
+    <resultMap id="OrgShortDomain" type="ag.orca.living.core.entity.org.OrgShortDomain">
+        <result property="id" column="id"/>
+        <result property="orgId" column="org_id"/>
+        <result property="domain" column="domain"/>
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               org_id,
+               domain,
+               deleted,
+               create_time,
+               update_time
+        from t_org_short_domain
+    </sql>
+    <select id="findAllDomainByOrgId" resultMap="OrgShortDomain">
+        <include refid="selectColumns"/>
+        where deleted = 0 and org_id = #{orgId}
+    </select>
+
+
+</mapper>

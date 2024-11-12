@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ag.orca.living.core.dao.control.ControlAtmosphereTemplateMapper">
+
+    <resultMap id="ControlAtmosphereTemplate" type="ag.orca.living.core.entity.control.ControlAtmosphereTemplate">
+        <id property="id" column="id"/>
+        <result property="orgId" column="org_id"/>
+        <result property="roomId" column="room_id"/>
+        <result property="textContent" column="text_content"/>
+        <result property="giftContent" column="gift_content"/>
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               org_id,
+               room_id,
+               text_content,
+               gift_content,
+               deleted,
+               create_time,
+               update_time
+        from t_atmosphere_template_control
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ControlAtmosphereTemplate">
+        <include refid="selectColumns"/>
+        where id = #{id}
+    </select>
+
+    <select id="findListByRoomId" resultMap="ControlAtmosphereTemplate">
+        <include refid="selectColumns"/>
+        <where>
+            and deleted = 0
+            <if test="roomId != null">
+                and room_id = #{roomId}
+            </if>
+        </where>
+    </select>
+
+
+    <insert id="insertSelective" keyProperty="id"
+            parameterType="ag.orca.living.core.entity.control.ControlAtmosphereTemplate"
+            useGeneratedKeys="true">
+        insert into t_atmosphere_template_control
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orgId != null">org_id,</if>
+            <if test="roomId != null">room_id,</if>
+            <if test="textContent != null">text_content,</if>
+            <if test="giftContent != null">gift_content,</if>
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orgId != null">#{orgId},</if>
+            <if test="roomId != null">#{roomId},</if>
+            <if test="textContent != null">#{textContent},</if>
+            <if test="giftContent != null">#{giftContent},</if>
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="logicDelById">
+        update t_atmosphere_template_control
+        set deleted    = 1,
+            update_time=#{dateTime}
+        where id = #{id}
+    </update>
+
+    <update id="updateByPrimaryKeySelective"
+            parameterType="ag.orca.living.core.entity.control.ControlAtmosphereTemplate">
+        update t_atmosphere_template_control
+        <set>
+            <if test="orgId != null">
+                org_id = #{orgId},
+            </if>
+            <if test="roomId != null">
+                room_id = #{roomId},
+            </if>
+            <if test="textContent != null">
+                text_content = #{textContent},
+            </if>
+            <if test="giftContent != null">
+                gift_content = #{giftContent},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+
+</mapper>

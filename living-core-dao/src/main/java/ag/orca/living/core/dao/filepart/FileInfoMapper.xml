@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ag.orca.living.core.dao.filepart.FileInfoMapper">
+    <resultMap id="FileInfo" type="ag.orca.living.core.entity.filepart.FileInfo">
+        <result property="id" column="id"/>
+        <result property="fileName" column="file_name"/>
+        <result property="realName" column="real_name"/>
+        <result property="bucket" column="bucket"/>
+        <result property="pathName" column="path_name"/>
+        <result property="fileSize" column="file_size"/>
+        <result property="filePart" column="file_part"/>
+        <result property="fileMd5" column="file_md5"/>
+        <result property="fileCrc32" column="file_crc32"/>
+        <result property="status" column="status"/>
+
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               file_name,
+               real_name,
+               bucket,
+               path_name,
+               file_size,
+               file_part,
+               file_md5,
+               file_crc32
+                   status,
+               deleted,
+               create_time,
+               update_time
+        from t_file_info
+    </sql>
+
+    <insert id="insert" parameterType="ag.orca.living.core.entity.filepart.FileInfo">
+        insert t_file_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="fileName != null and fileName != ''">file_name,</if>
+            <if test="realName != null and realName != ''">real_name,</if>
+            <if test="bucket != null and bucket != ''">bucket,</if>
+            <if test="pathName != null and pathName != ''">path_name,</if>
+            <if test="fileSize != null">file_size,</if>
+            <if test="filePart != null">file_part,</if>
+            <if test="fileMd5 != null">file_md5,</if>
+            <if test="fileCrc32 != null">file_crc32,</if>
+            <if test="status != null">status,</if>
+
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="fileName != null and fileName != ''">#{fileName},</if>
+            <if test="realName != null and realName != ''">#{realName},</if>
+            <if test="bucket != null and bucket != ''">#{bucket},</if>
+            <if test="pathName != null and pathName != ''">#{pathName},</if>
+            <if test="fileSize != null">#{fileSize},</if>
+            <if test="filePart != null">#{filePart},</if>
+            <if test="fileMd5 != null and fileMd5 !=''">#{fileMd5},</if>
+            <if test="fileCrc32 != null">#{fileCrc32},</if>
+            <if test="status != null">#{status},</if>
+
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+    <update id="completeById">
+        update t_file_info
+        set status      = 1,
+            update_time = #{dateTime}
+        where id = #{id}
+    </update>
+
+    <delete id="removeById">
+        delete
+        from t_file_info
+        where id = #{id}
+    </delete>
+    <select id="findByMd5AndCrc32" resultMap="FileInfo">
+        <include refid="selectColumns"/>
+        where file_md5 = #{fileMd5} and file_crc32 = #{fileCrc32}
+    </select>
+    <select id="findById" resultMap="FileInfo">
+        <include refid="selectColumns"/>
+        where id = #{id}
+    </select>
+</mapper>

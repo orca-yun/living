@@ -1,0 +1,35 @@
+spring:
+  profiles:
+    active: dev
+    include: ${spring.profiles.active}
+  application:
+    name: live-seq
+  data:
+    redis:
+      host: redis
+      port: 6379
+      password: redispwd
+      timeout: 10000ms
+      connect-timeout: 10000ms
+      client-name: ${spring.application.name}
+      lettuce:
+        pool:
+          enabled: true
+          max-active: 10
+          max-idle: 10
+          min-idle: 0
+
+# DUBBO
+dubbo:
+  registry:
+    address: nacos://nacos:8848
+  application:
+    logger: slf4j
+    name: ${spring.application.name}
+    qos-enable: off
+  protocol:
+    name: tri
+    port: 50052
+  provider:
+    filter: -exception, providerOrcaExceptionFilter
+

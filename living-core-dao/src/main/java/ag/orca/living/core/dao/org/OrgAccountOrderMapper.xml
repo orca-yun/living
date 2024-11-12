@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.org.OrgAccountOrderMapper">
+
+    <resultMap id="OrgAccountOrder" type="ag.orca.living.core.entity.org.OrgAccountOrder">
+        <result property="id" column="id"/>
+
+        <result property="orgId" column="org_id"/>
+        <result property="accountId" column="account_id"/>
+        <result property="amount" column="amount"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="status" column="status"/>
+        <result property="bankOrderNo" column="bank_order_no"/>
+        <result property="remark" column="remark"/>
+
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               org_id,
+               account_id,
+               amount,
+               order_no,
+               status,
+               bank_order_no,
+               remark,
+               deleted,
+               create_time,
+               update_time
+        from t_org_account_order
+    </sql>
+
+    <insert id="insert" parameterType="ag.orca.living.core.entity.org.OrgAccountOrder"
+            useGeneratedKeys="true" keyColumn="id">
+        insert t_org_account_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+
+            <if test="orgId != null">org_id,</if>
+            <if test="accountId != null">account_id,</if>
+            <if test="amount != null">amount,</if>
+            <if test="orderNo != null and orderNo != ''">order_no,</if>
+            <if test="status != null">status,</if>
+            <if test="bankOrderNo != null and bankOrderNo != ''">bank_order_no,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+
+            <if test="orgId != null">#{orgId},</if>
+            <if test="accountId != null">#{accountId},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="orderNo != null and orderNo != ''">#{orderNo},</if>
+            <if test="status != null">#{status},</if>
+            <if test="bankOrderNo != null and bankOrderNo != ''">#{bankOrderNo},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="markStatus">
+        update t_org_account_order
+        set status     = #{status},
+            update_time= #{dateTime}
+        where id = #{id}
+          and deleted = 0
+    </update>
+
+</mapper>

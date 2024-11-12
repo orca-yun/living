@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.org.OrgExemptWordMapper">
+
+
+    <resultMap id="OrgExemptWord" type="ag.orca.living.core.entity.org.OrgExemptWord">
+        <result property="id" column="id"/>
+        <result property="orgId" column="org_id"/>
+
+        <result property="name" column="name"/>
+        <result property="words" column="words"/>
+
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+
+    <sql id="selectColumns">
+        select id,
+               org_id,
+               name,
+               words,
+               deleted,
+               create_time,
+               update_time
+        from t_org_exempt_word
+    </sql>
+
+    <insert id="insert"
+            parameterType="ag.orca.living.core.entity.org.OrgExemptWord"
+            useGeneratedKeys="true" keyProperty="id">
+        insert t_org_exempt_word
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orgId != null">org_id,</if>
+            <if test="words != null and words != ''">words,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orgId != null">#{orgId},</if>
+            <if test="words != null and words != ''">#{words},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+
+    </insert>
+
+
+    <select id="findById" resultMap="OrgExemptWord">
+        <include refid="selectColumns"/>
+        where id = #{id} and deleted = 0
+    </select>
+
+    <update id="updateWordsById">
+        update t_org_exempt_word
+        set words = #{words},
+            name  = #{name}
+        where id = #{id}
+    </update>
+
+    <update id="logicDel">
+        update t_org_exempt_word
+        set deleted = 1, update_time = #{dateTime}
+        where org_id = #{orgId}
+        and id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <select id="findListByOrgId" resultMap="OrgExemptWord">
+        <include refid="selectColumns"/>
+        where org_id = #{orgId} and deleted = 0
+    </select>
+
+    <select id="findListByOrgIdAndNameLike" resultMap="OrgExemptWord">
+        <include refid="selectColumns"/>
+        <where>
+            and deleted = 0
+            <if test="orgId != null">and org_id = #{orgId}</if>
+            <if test="name != null and name !=''">and name like concat('%', #{name},'%')</if>
+        </where>
+    </select>
+
+
+</mapper>

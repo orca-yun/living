@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ag.orca.living.core.dao.control.ControlFieldMessageMapper">
+
+    <resultMap id="ControlFieldMessage" type="ag.orca.living.core.entity.control.ControlFieldMessage">
+        <id property="id" column="id"/>
+        <result property="orgId" column="org_id"/>
+        <result property="roomId" column="room_id"/>
+        <result property="robotId" column="robot_id"/>
+        <result property="robotNickname" column="robot_nickname"/>
+        <result property="robotHeadIco" column="robot_head_ico"/>
+        <result property="controlType" column="control_type"/>
+        <result property="controlId" column="control_id"/>
+        <result property="messageType" column="message_type"/>
+        <result property="message" column="message"/>
+        <result property="triggerTime" column="trigger_time"/>
+        <result property="status" column="status"/>
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               org_id,
+               room_id,
+               robot_id,
+               robot_nickname,
+               robot_head_ico,
+               control_type,
+               control_id,
+               message_type,
+               message,
+               trigger_time,
+               status,
+               deleted,
+               create_time,
+               update_time
+        from t_control_field_message
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ControlFieldMessage">
+        <include refid="selectColumns"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSelective" keyProperty="id"
+            parameterType="ag.orca.living.core.entity.control.ControlFieldMessage"
+            useGeneratedKeys="true">
+        insert into t_control_field_message
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orgId != null">org_id,</if>
+            <if test="roomId != null">room_id,</if>
+            <if test="robotId != null">robot_id,</if>
+            <if test="robotNickname != null">robot_nickname,</if>
+            <if test="robotHeadIco != null">robot_head_ico,</if>
+            <if test="controlType != null">control_type,</if>
+            <if test="controlId != null">control_id,</if>
+            <if test="messageType != null">message_type,</if>
+            <if test="message != null">message,</if>
+            <if test="triggerTime != null">trigger_time,</if>
+            <if test="status != null">status,</if>
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orgId != null">#{orgId},</if>
+            <if test="roomId != null">#{roomId},</if>
+            <if test="robotId != null">#{robotId},</if>
+            <if test="robotNickname != null">#{robotNickname},</if>
+            <if test="robotHeadIco != null">#{robotHeadIco},</if>
+            <if test="controlType != null">#{controlType},</if>
+            <if test="controlId != null">#{controlId},</if>
+            <if test="messageType != null">#{messageType},</if>
+            <if test="message != null">#{message},</if>
+            <if test="triggerTime != null">#{triggerTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="ag.orca.living.core.entity.control.ControlFieldMessage">
+        update t_control_field_message
+        <set>
+            <if test="orgId != null">
+                org_id = #{orgId},
+            </if>
+            <if test="roomId != null">
+                room_id = #{roomId},
+            </if>
+            <if test="robotId != null">
+                robot_id = #{robotId},
+            </if>
+            <if test="robotNickname != null">
+                robot_nickname = #{robotNickname},
+            </if>
+            <if test="robotHeadIco != null">
+                robot_head_ico = #{robotHeadIco},
+            </if>
+            <if test="controlType != null">
+                control_type = #{controlType},
+            </if>
+            <if test="controlId != null">
+                control_id = #{controlId},
+            </if>
+            <if test="messageType != null">
+                message_type = #{messageType},
+            </if>
+            <if test="message != null">
+                message = #{message},
+            </if>
+            <if test="triggerTime != null">
+                trigger_time = #{triggerTime},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

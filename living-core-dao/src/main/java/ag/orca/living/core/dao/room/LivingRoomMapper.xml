@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.room.LivingRoomMapper">
+
+    <resultMap id="LivingRoom" type="ag.orca.living.core.entity.room.LivingRoom">
+        <result property="id" column="id"/>
+        <result property="orgId" column="org_id"/>
+
+        <result property="name" column="name"/>
+        <result property="anchorPwd" column="anchor_pwd"/>
+        <result property="assistantPwd" column="assistant_pwd"/>
+        <result property="sharePwd" column="share_pwd"/>
+        <result property="livingTime" column="living_time"/>
+        <result property="scheduleTime" column="schedule_time"/>
+        <result property="cover" column="cover"/>
+        <result property="logo" column="logo"/>
+        <result property="remark" column="remark"/>
+        <result property="livingType" column="living_type"/>
+        <result property="videoQuality" column="video_quality"/>
+        <result property="videoType" column="video_type"/>
+        <result property="mediaBizId" column="media_biz_id"/>
+        <result property="cycleTimes" column="cycle_times"/>
+        <result property="status" column="status"/>
+
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               org_id,
+
+               name,
+               anchor_pwd,
+               assistant_pwd,
+               share_pwd,
+               living_time,
+               schedule_time,
+               cover,
+               logo,
+               remark,
+               living_type,
+               video_type,
+               video_quality,
+               media_biz_id,
+               cycle_times,
+               status,
+
+               deleted,
+               create_time,
+               update_time
+        from t_living_room
+    </sql>
+
+    <select id="findLivingRoomById" resultMap="LivingRoom">
+        <include refid="selectColumns"/>
+        where
+        id= #{id} AND deleted = 0
+    </select>
+
+    <insert id="insert" parameterType="ag.orca.living.core.entity.room.LivingRoom">
+        insert t_living_room
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orgId != null">org_id,</if>
+            <if test="name != null and name !=''">name,</if>
+            <if test="anchorPwd != null and anchorPwd != ''">anchor_pwd,</if>
+            <if test="assistantPwd != null and assistantPwd != ''">assistant_pwd,</if>
+            <if test="sharePwd != null and sharePwd != ''">share_pwd,</if>
+            <if test="livingTime != null">living_time,</if>
+            <if test="scheduleTime != null">schedule_time,</if>
+            <if test="cover != null and cover != ''">cover,</if>
+            <if test="logo != null and logo != ''">logo,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="livingType != null">living_type,</if>
+            <if test="videoType != null">video_type,</if>
+            <if test="videoQuality != null">video_quality,</if>
+            <if test="mediaBizId != null">media_biz_id,</if>
+            <if test="cycleTimes != null">cycle_times,</if>
+            <if test="status != null">status,</if>
+
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orgId != null">#{orgId},</if>
+            <if test="name != null and name !=''">#{name},</if>
+            <if test="anchorPwd != null and anchorPwd != ''">#{anchorPwd},</if>
+            <if test="assistantPwd != null and assistantPwd != ''">#{assistantPwd},</if>
+            <if test="sharePwd != null and sharePwd != ''">#{sharePwd},</if>
+            <if test="livingTime != null">#{livingTime},</if>
+            <if test="scheduleTime != null">#{scheduleTime},</if>
+            <if test="cover != null and cover != ''">#{cover},</if>
+            <if test="logo != null and logo != ''">#{logo},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="livingType != null">#{livingType},</if>
+            <if test="videoType != null">#{videoType},</if>
+            <if test="videoQuality != null">#{videoQuality},</if>
+            <if test="mediaBizId != null">#{mediaBizId},</if>
+            <if test="cycleTimes != null">#{cycleTimes},</if>
+            <if test="status != null">#{status},</if>
+
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="ag.orca.living.core.entity.room.LivingRoom">
+        update t_living_room
+        set
+        <trim suffixOverrides=",">
+            <if test="orgId != null">org_id = #{orgId},</if>
+            <if test="name != null and name !=''">name = #{name},</if>
+            <if test="anchorPwd != null and anchorPwd != ''">anchor_pwd = #{anchorPwd},</if>
+            <if test="assistantPwd != null and assistantPwd != ''">assistant_pwd = #{assistantPwd},</if>
+            <if test="sharePwd != null and sharePwd != ''">share_pwd = #{sharePwd},</if>
+            <if test="livingTime != null">living_time = #{livingTime},</if>
+            <if test="scheduleTime != null">schedule_time = #{scheduleTime},</if>
+            <if test="cover != null and cover != ''">cover = #{cover},</if>
+            <if test="logo != null and logo != ''">logo = #{logo},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+            <if test="livingType != null">living_type = #{livingType},</if>
+            <if test="videoType != null">video_type = #{videoType},</if>
+            <if test="videoQuality != null">video_quality = #{videoQuality},</if>
+            <if test="mediaBizId != null">media_biz_id = #{mediaBizId},</if>
+            <if test="cycleTimes != null">cycle_times = #{cycleTimes},</if>
+            <if test="status != null">status = #{status},</if>
+
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+
+    <update id="logicDel">
+        update t_living_room
+        set deleted = 1, update_time = #{dateTime}
+        where
+        org_id = #{orgId} and
+        id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+    <select id="findListByIdList" resultMap="LivingRoom">
+        <include refid="selectColumns"/>
+        where deleted = 0 and id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+
+    <select id="findListByOrgId" resultMap="LivingRoom">
+        <include refid="selectColumns"/>
+        where
+        org_id = #{orgId} and deleted = 0
+    </select>
+
+    <select id="findListByOrgIdAndNameLikeAndVideoType" resultMap="LivingRoom">
+        <include refid="selectColumns"/>
+        <where>
+            and deleted = 0
+            <if test="orgId != null">and org_id = #{orgId}</if>
+            <if test="name != null and name !=''">and name like concat('%',#{name},'%')</if>
+            <if test="videoType != null">and video_type = #{videoType}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="findSameNameRoom" resultMap="LivingRoom">
+        <include refid="selectColumns"/>
+        <where>
+            and deleted = 0
+            <if test="orgId != null">and org_id = #{orgId}</if>
+            <if test="name != null and name !=''">and name = #{name}</if>
+        </where>
+        limit 1
+    </select>
+    <select id="findAllRooms" resultMap="LivingRoom">
+        <include refid="selectColumns"/>
+        <where>
+            and deleted = 0
+        </where>
+    </select>
+
+    <select id="findRoomListByVideoType" resultMap="LivingRoom">
+        <include refid="selectColumns"/>
+        <where>
+            and deleted = 0
+            <if test="videoType != null">and video_type = #{videoType}</if>
+        </where>
+    </select>
+
+    <select id="countMediaWithUsed" resultType="java.lang.Integer">
+        select count(1) from t_living_room
+        <where>
+            and deleted = 0
+            <if test="mediaIds != null and mediaIds.size() > 0">
+                and media_biz_id in
+                <foreach collection="mediaIds" item="mediaId" open="(" close=")" separator=",">
+                    #{mediaId}
+                </foreach>
+            </if>
+        </where>
+
+    </select>
+    <select id="existsId" resultType="java.lang.Integer">
+        select count(1)
+        from t_living_room
+        where id = #{id}
+    </select>
+
+</mapper>

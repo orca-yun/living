@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.share.UserChannelRelationMapper">
+
+    <resultMap id="UserChannelRelation" type="ag.orca.living.core.entity.share.UserChannelRelation">
+        <result property="id" column="id"/>
+        <result property="orgId" column="org_id"/>
+        <result property="channelId" column="channel_id"/>
+        <result property="roomId" column="room_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="openId" column="open_id"/>
+        <result property="bindDate" column="bind_date"/>
+        <result property="liveRecordId" column="live_record_id"/>
+
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               org_id,
+               channel_id,
+               room_id,
+               live_record_id,
+               user_id,
+               open_id,
+               bind_date,
+               deleted,
+               create_time,
+               update_time
+        from t_user_channel_relation
+    </sql>
+
+
+    <insert id="insert" parameterType="ag.orca.living.core.entity.share.UserChannelRelation" useGeneratedKeys="true"
+            keyProperty="id">
+        insert t_user_channel_relation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orgId != null">org_id,</if>
+            <if test="channelId != null">channel_id,</if>
+            <if test="roomId != null">room_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="openId != null and openId != ''">open_id,</if>
+            <if test="bindDate != null">bind_date,</if>
+            <if test="liveRecordId != null">live_record_id,</if>
+
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orgId != null">#{orgId},</if>
+            <if test="channelId != null">#{channelId},</if>
+            <if test="roomId != null">#{roomId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="openId != null and openId != ''">#{openId},</if>
+            <if test="bindDate != null">#{bindDate},</if>
+            <if test="liveRecordId != null">#{liveRecordId},</if>
+
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+
+    <select id="findFirstByOpenId" resultMap="UserChannelRelation">
+        <include refid="selectColumns"/>
+        where open_id = #{openId}
+        limit 1
+    </select>
+
+
+    <resultMap id="ChannelUserStaticsVo" type="ag.orca.living.core.vo.stats.ChannelUserStaticsVo">
+        <result property="channelId" column="channel_id"/>
+        <result property="roomId" column="room_id"/>
+        <result property="cnt" column="cnt"/>
+    </resultMap>
+
+    <!-- 查询 渠道 房间 计数 当日的所有引流人数 -->
+    <select id="findChannelStaticsByOrgIdAndBindDate" resultMap="ChannelUserStaticsVo">
+
+        select channel_id,
+               room_id,
+               count(1) as cnt
+        from t_user_channel_relation
+        where org_id = #{orgId}
+          and bind_date = #{bindDate}
+          and deleted = 0
+        group by channel_id, room_id
+    </select>
+
+
+</mapper>

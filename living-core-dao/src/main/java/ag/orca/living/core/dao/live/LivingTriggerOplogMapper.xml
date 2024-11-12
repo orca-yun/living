@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.live.LivingTriggerOplogMapper">
+    <resultMap id="LivingTriggerOplog" type="ag.orca.living.core.entity.live.LivingTriggerOplog">
+        <result property="id" column="id"/>
+        <result property="orgId" column="org_id"/>
+        <result property="roomId" column="room_id"/>
+        <result property="day" column="day"/>
+        <result property="scheduleTime" column="schedule_time"/>
+
+        <result property="bizId" column="biz_id"/>
+        <result property="bizType" column="biz_type"/>
+        <result property="pushTaskId" column="push_task_id"/>
+        <result property="duration" column="duration"/>
+        <result property="status" column="status"/>
+        <result property="msg" column="msg"/>
+
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+    <sql id="selectColumns">
+        select id,
+               org_id,
+               room_id,
+
+               `day`,
+               schedule_time,
+               biz_id,
+               biz_type,
+               push_task_id,
+               duration,
+               status,
+               msg,
+
+               deleted,
+               create_time,
+               update_time
+        from t_living_trigger_oplog
+    </sql>
+
+    <insert id="insert" parameterType="ag.orca.living.core.entity.live.LivingTriggerOplog" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_living_trigger_oplog
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orgId != null">org_id,</if>
+            <if test="roomId != null">room_id,</if>
+
+            <if test="day != null">`day`,</if>
+            <if test="scheduleTime != null">schedule_time,</if>
+
+            <if test="bizId != null">biz_id,</if>
+            <if test="bizType != null">biz_type,</if>
+            <if test="pushTaskId != null">push_task_id,</if>
+            <if test="duration != null">duration,</if>
+            <if test="status != null">status,</if>
+            <if test="msg != null and msg != ''">msg,</if>
+
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orgId != null">#{orgId},</if>
+            <if test="roomId != null">#{roomId},</if>
+            <if test="day != null">#{day},</if>
+            <if test="scheduleTime != null">#{scheduleTime},</if>
+
+            <if test="bizId != null">#{bizId},</if>
+            <if test="bizType != null">#{bizType},</if>
+            <if test="pushTaskId != null">#{pushTaskId},</if>
+            <if test="duration != null">#{duration},</if>
+            <if test="status != null">#{status},</if>
+            <if test="msg != null and msg != ''">#{msg},</if>
+
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+    <update id="updateDurationByPushTaskId">
+        update t_living_trigger_oplog
+        set duration    = #{duration},
+            update_time = #{dateTime}
+        where push_task_id = #{pushTaskId}
+    </update>
+
+    <update id="renderPushTaskInfoById">
+        update t_living_trigger_oplog
+        set
+        <trim suffixOverrides=",">
+            <if test="duration != null">duration = #{duration},</if>
+            <if test="pushTaskId != null">push_task_id = #{pushTaskId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="dateTime != null">update_time = #{dateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updatePushTaskByPushTaskId">
+        update t_living_trigger_oplog
+        set
+        <trim suffixOverrides=",">
+            <if test="duration != null">duration = #{duration},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="msg != null and msg !=''">msg = #{msg},</if>
+            <if test="dateTime != null">update_time = #{dateTime},</if>
+        </trim>
+        where push_task_id = #{pushTaskId}
+    </update>
+    <select id="findOplogByPushTaskId" resultMap="LivingTriggerOplog">
+        <include refid="selectColumns"/>
+        where push_task_id = #{pushTaskId} order by id desc limit 1
+    </select>
+    <select id="findLatestOplogByRoomId" resultMap="LivingTriggerOplog">
+        <include refid="selectColumns"/>
+        where room_id = #{roomId} order by id desc limit 1
+    </select>
+    <select id="findFirstByRoomIdAndDayAndScheduleTime"
+            resultMap="LivingTriggerOplog">
+        <include refid="selectColumns"/>
+        where room_id = #{roomId} and `day` = #{day} and schedule_time = #{scheduleTime}
+        order by id desc limit 1
+
+    </select>
+
+</mapper>

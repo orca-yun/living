@@ -1,0 +1,427 @@
+---
+version: "3.3"
+
+networks:
+  living_network:
+
+services:
+  zookeeper:
+    logging:
+      driver: json-file
+      options:
+        max-file: "1"
+        max-size: "10m"
+    image: zookeeper
+    container_name: zookeeper
+    privileged: true
+    restart: on-failure
+    env_file: .env
+    networks:
+      - living_network
+    environment:
+      - TZ=${TZ}
+    ports:
+      - ${ZOOKEEPER_PORT}:2181
+    volumes:
+      - ./zk_data:/data
+
+  mysql:
+    logging:
+      driver: json-file
+      options:
+        max-file: "1"
+        max-size: "10m"
+    image: mysql
+    container_name: mysql
+    privileged: true
+    restart: on-failure
+    env_file: .env
+    networks:
+      - living_network
+    environment:
+      - LANG=C.UTF-8
+      - TZ=${TZ}
+      - MYSQL_ROOT_PASSWORD=${ORCA_PASSWORD}
+    ports:
+      - ${MYSQL_PORT}:3306
+    command:
+      - --log-bin=0
+    volumes:
+      - ./mysql_backup:/mysql_backup
+      - ./mysql_data:/var/lib/mysql
+      - ./init/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  mongo:
+    logging:
+      driver: json-file
+      options:
+        max-file: "1"
+        max-size: "10m"
+    image: mongo
+    container_name: mongo
+    privileged: true
+    restart: on-failure
+    env_file: .env
+    networks:
+      - living_network
+    environment:
+      - TZ=${TZ}
+      - MONGO_INITDB_ROOT_USERNAME=${ORCA_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${ORCA_MONGO_PASSWORD}
+    ports:
+      - ${MONGO_PORT}:27017
+    volumes:
+      - ./mongo_data:/data/db
+
+  redis:
+    logging:
+      driver: json-file
+      options:
+        max-file: "1"
+        max-size: "10m"
+    image: redis
+    container_name: redis
+    privileged: true
+    restart: on-failure
+    env_file: .env
+    networks:
+      - living_network
+    environment:
+      - TZ=${TZ}
+    command:
+      - redis-server
+      - /etc/redis/redis.conf
+    ports:
+      - ${REDIS_PORT}:6379
+    volumes:
+      - ./redis.conf:/etc/redis/redis.conf
+      - ./redis_data:/data
+
+  pulsar:
+    logging:
+      driver: json-file
+      options:
+        max-file: "1"
+        max-size: "10m"
+    image: apachepulsar/pulsar:3.2.0
+    container_name: pulsar
+    privileged: true
+    restart: on-failure
+    env_file: .env
+    networks:
+      - living_network
+    environment:
+      - TZ=${TZ}
+    command:
+      - bin/pulsar
+      - standalone
+    ports:
+      - ${PULSAR_API_PORT}:8080
+      - ${PULSAR_PORT}:6650
+    volumes:
+      - pulsar_data:/pulsar/data
+      - pulsar_conf:/pulsar/conf
+
+  nacos:
+    logging:
+      driver: json-file
+      options:
+        max-file: "1"
+        max-size: "10m"
+    image: nacos/nacos-server:v2.3.0
+    container_name: nacos
+    privileged: true
+    restart: on-failure
+    env_file: .env
+    networks:
+      - living_network
+    environment:
+      - TZ=${TZ}
+      - PREFER_HOST_MODE=hostnaxme
+      - MODE=standalone
+    ports:
+      - ${NACOS_PORT}:8848
+      - ${NACOS_GRPC_PORT}:9848
+
+  seq:
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "2"
+    container_name: seq
+    restart: always
+    build:
+      context: .
+      dockerfile: ./living-seq-provider.Dockerfile
+    image: seq:test
+    networks:
+      - living_network
+    environment:
+      - TZ=Asia/Shanghai
+      - ENV=test
+    ports:
+      - 50052:50052
+    volumes:
+      - /var/log/seq:/logs
+    depends_on:
+      - nacos
+
+  provider:
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "2"
+    container_name: provider
+    restart: always
+    build:
+      context: .
+      dockerfile: ./living-core-provider.Dockerfile
+    image: provider:test
+    networks:
+      - living_network
+    environment:
+      - TZ=Asia/Shanghai
+      - ENV=test
+    ports:
+      - 50051:50051
+    volumes:
+      - /var/log/provider:/logs
+    depends_on:
+      - mysql
+      - mongo
+      - redis
+      - pulsar
+      - nacos
+      - seq
+
+  admin:
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "2"
+    container_name: admin
+    restart: always
+    build:
+      context: .
+      dockerfile: ./living-admin.Dockerfile
+    image: admin:test
+    networks:
+      - living_network
+    environment:
+      - TZ=Asia/Shanghai
+      - ENV=test
+    ports:
+      - 8001:8001
+    volumes:
+      - /var/log/admin:/logs
+    depends_on:
+      - seq
+      - provider
+
+  console:
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "2"
+    container_name: console
+    restart: always
+    build:
+      context: .
+      dockerfile: ./living-console.Dockerfile
+    image: console:test
+    networks:
+      - living_network
+    environment:
+      - TZ=Asia/Shanghai
+      - ENV=test
+    ports:
+      - 8002:8002
+    volumes:
+      - /var/log/console:/logs
+    depends_on:
+      - seq
+      - provider
+
+  sharing:
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "2"
+    container_name: sharing
+    restart: always
+    build:
+      context: .
+      dockerfile: ./living-sharing.Dockerfile
+    image: sharing:test
+    networks:
+      - living_network
+    environment:
+      - TZ=Asia/Shanghai
+      - ENV=test
+    ports:
+      - 8003:8003
+    volumes:
+      - /var/log/sharing:/logs
+    depends_on:
+      - seq
+      - provider
+
+  short:
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "2"
+    container_name: short
+    restart: always
+    build:
+      context: .
+      dockerfile: ./living-short.Dockerfile
+    image: short:test
+    networks:
+      - living_network
+    environment:
+      - TZ=Asia/Shanghai
+      - ENV=test
+    ports:
+      - 8004:8004
+    volumes:
+      - /var/log/short:/logs
+    depends_on:
+      - seq
+      - provider
+
+  boss:
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "2"
+    container_name: boss
+    restart: always
+    build:
+      context: .
+      dockerfile: ./living-boss.Dockerfile
+    image: boss:test
+    networks:
+      - living_network
+    environment:
+      - TZ=Asia/Shanghai
+      - ENV=test
+    ports:
+      - 8005:8005
+    volumes:
+      - /var/log/boss:/logs
+    depends_on:
+      - seq
+      - provider
+
+  fire:
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "2"
+    container_name: fire
+    restart: always
+    build:
+      context: .
+      dockerfile: ./fire-sio.Dockerfile
+    image: fire:test
+    networks:
+      - living_network
+    environment:
+      - TZ=Asia/Shanghai
+      - ENV=test
+    ports:
+      - 7001:7001
+    volumes:
+      - /var/log/fire:/logs
+    depends_on:
+      - mongo
+      - redis
+      - pulsar
+
+  draw:
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "2"
+    container_name: draw
+    restart: always
+    build:
+      context: .
+      dockerfile: ./draw-sio.Dockerfile
+    image: draw:test
+    networks:
+      - living_network
+    environment:
+      - TZ=Asia/Shanghai
+      - ENV=test
+    ports:
+      - 7002:7002
+    volumes:
+      - /var/log/draw:/logs
+    depends_on:
+      - mongo
+      - redis
+      - pulsar
+
+  grab:
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "2"
+    container_name: grab
+    restart: always
+    build:
+      context: .
+      dockerfile: ./grab-push.Dockerfile
+    image: grab:test
+    networks:
+      - living_network
+    environment:
+      - TZ=Asia/Shanghai
+      - ENV=test
+    volumes:
+      - /var/log/grab:/logs
+    ports:
+      - 8000:8000
+    depends_on:
+      - mysql
+
+  task:
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "2"
+    container_name: task
+    restart: always
+    build:
+      context: .
+      dockerfile: ./living-task.Dockerfile
+    image: task:test
+    networks:
+      - living_network
+    environment:
+      - TZ=Asia/Shanghai
+      - ENV=test
+    volumes:
+      - /var/log/task:/logs
+    depends_on:
+      - zookeeper
+
+volumes:
+  pulsar_data:
+  pulsar_conf:
+
+...
+

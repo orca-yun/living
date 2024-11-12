@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.share.LivingShareUserViewRecordMapper">
+
+
+    <resultMap id="LivingShareUserViewRecord" type="ag.orca.living.core.entity.share.LivingShareUserViewRecord">
+        <result property="id" column="id"/>
+
+        <result property="viewDate" column="view_date"/>
+        <result property="orgId" column="org_id"/>
+        <result property="roomId" column="room_id"/>
+        <result property="roomRecordId" column="room_record_id"/>
+        <result property="channelId" column="channel_id"/>
+        <result property="uid" column="uid"/>
+        <result property="nickname" column="nickname"/>
+        <result property="headIco" column="head_ico"/>
+        <result property="viewDuration" column="view_duration"/>
+        <result property="msgNum" column="msg_num"/>
+        <result property="giftNum" column="gift_num"/>
+        <result property="userAgent" column="user_agent"/>
+        <result property="tsOnline" column="ts_online"/>
+        <result property="tsOffline" column="ts_offline"/>
+        <result property="onlineTime" column="online_time"/>
+        <result property="offlineTime" column="offline_time"/>
+
+        <result property="eventTs" column="event_ts"/>
+        <result property="eventTime" column="event_time"/>
+        <result property="status" column="status"/>
+        <result property="onlineTimes" column="online_times"/>
+
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               view_date,
+               org_id,
+               room_id,
+               room_record_id,
+               channel_id,
+               uid,
+               nickname,
+               head_ico,
+               view_duration,
+               msg_num,
+               gift_num,
+               user_agent,
+               ts_online,
+               ts_offline,
+               online_time,
+               offline_time,
+               event_ts,
+               event_time,
+               status,
+               online_times,
+               deleted,
+               create_time,
+               update_time
+        from t_share_user_view_record
+    </sql>
+
+
+    <insert id="insertOrUpdate" parameterType="ag.orca.living.core.entity.share.LivingShareUserViewRecord">
+        insert into t_share_user_view_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="viewDate != null">view_date,</if>
+            <if test="orgId != null">org_id,</if>
+            <if test="roomId != null">room_id,</if>
+            <if test="roomRecordId != null">room_record_id,</if>
+            <if test="channelId != null">channel_id,</if>
+            <if test="uid != null and uid != ''">uid,</if>
+            <if test="nickname != null and nickname !=''">nickname,</if>
+            <if test="headIco != null and headIco != ''">head_ico,</if>
+            <if test="viewDuration != null">view_duration,</if>
+            <if test="msgNum != null">msg_num,</if>
+            <if test="giftNum != null">gift_num,</if>
+            <if test="userAgent != null and userAgent != ''">user_agent,</if>
+
+            <if test="tsOnline != null">ts_online,</if>
+            <if test="tsOffline != null">ts_offline,</if>
+            <if test="onlineTime != null">online_time,</if>
+            <if test="offlineTime != null">offline_time,</if>
+
+            <if test="eventTs != null">event_ts,</if>
+            <if test="eventTime != null">event_time,</if>
+            <if test="status != null">status,</if>
+            <if test="onlineTimes != null">online_times,</if>
+
+
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="viewDate != null">#{viewDate},</if>
+            <if test="orgId != null">#{orgId},</if>
+            <if test="roomId != null">#{roomId},</if>
+
+            <if test="roomRecordId != null">#{roomRecordId},</if>
+            <if test="channelId != null">#{channelId},</if>
+            <if test="uid != null and uid != ''">#{uid},</if>
+            <if test="nickname != null and nickname != ''">#{nickname},</if>
+            <if test="headIco != null and headIco != ''">#{headIco},</if>
+            <if test="viewDuration != null">#{viewDuration},</if>
+            <if test="msgNum != null">#{msgNum},</if>
+            <if test="giftNum != null">#{giftNum},</if>
+            <if test="userAgent != null and userAgent != ''">#{userAgent},</if>
+
+            <if test="tsOnline != null">#{tsOnline},</if>
+            <if test="tsOffline != null">#{tsOffline},</if>
+            <if test="onlineTime != null">#{onlineTime},</if>
+            <if test="offlineTime != null">#{offlineTime},</if>
+
+            <if test="eventTs != null">#{eventTs},</if>
+            <if test="eventTime != null">#{eventTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="onlineTimes != null">#{onlineTimes},</if>
+
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+
+        <trim prefix="on duplicate key update" suffixOverrides=",">
+            <if test="roomRecordId != null">room_record_id = values(room_record_id),</if>
+            <if test="nickname != null and nickname != ''">nickname = values(nickname),</if>
+            <if test="headIco != null and headIco != ''">head_ico = values(head_ico),</if>
+            <if test="userAgent != null and userAgent != ''">user_agent = values(user_agent),</if>
+
+            <if test="tsOffline != null">ts_offline = values(ts_offline),</if>
+            <if test="offlineTime != null">offline_time = values(offline_time),</if>
+
+            <if test="eventTs != null">event_ts = values(event_ts),</if>
+            <if test="eventTime != null">event_time = values(event_time),</if>
+            <if test="status != null">status = values(status),</if>
+            <if test="onlineTimes != null">online_times = online_times + values(online_times),</if>
+
+            <if test="viewDuration != null">view_duration = view_duration + values(view_duration),</if>
+            <if test="msgNum != null">msg_num = msg_num + values(msg_num),</if>
+            <if test="giftNum != null">gift_num = gift_num + values(gift_num),</if>
+            <if test="updateTime != null">update_time = values(update_time),</if>
+
+        </trim>
+
+    </insert>
+    <select id="findListByRoomIdAndViewDateAndChannelIds"
+            resultMap="LivingShareUserViewRecord">
+        <include refid="selectColumns"/>
+        <where>
+            and deleted = 0
+            <if test="viewDate != null">and view_date = #{viewDate}</if>
+            <if test="roomId != null">and room_id = #{roomId}</if>
+            <if test="channelIds != null and channelIds.size() > 0">
+                and channel_id in
+                <foreach collection="channelIds" open="(" close=")" item="channelId" separator=",">
+                    #{channelId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+
+    <resultMap id="LivingRoomOverviewVo" type="ag.orca.living.core.vo.stats.LivingRoomOverviewVo">
+        <result property="pv" column="pv"/>
+        <result property="uv" column="uv"/>
+        <result property="onlineNum" column="online_num"/>
+        <result property="greater5Num" column="greater5_num"/>
+        <result property="totalViewDuration" column="total_view_duration"/>
+        <result property="avgViewDuration" column="avg_view_duration"/>
+    </resultMap>
+
+    <select id="roomOverviewStatics" resultMap="LivingRoomOverviewVo">
+        select
+        sum(online_times) as pv,
+        count(1) as uv,
+        sum(if(view_duration >= 300, 1, 0)) as greater5_num,
+        sum(view_duration) as total_view_duration,
+        avg(view_duration) as avg_view_duration
+        from t_share_user_view_record
+        <where>
+            and deleted = 0
+            <if test="start != null">and view_date >= #{start}</if>
+            <if test="stop != null">and #{stop} >= view_date</if>
+            <if test="roomIds != null and roomIds.size() > 0">
+                and room_id in
+                <foreach collection="roomIds" item="roomId" open="(" close=")" separator=",">
+                    #{roomId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+
+    <resultMap id="LivingRoomShareUserStaticsVo" type="ag.orca.living.core.vo.stats.LivingRoomShareUserStaticsVo">
+        <result property="viewPageNum" column="view_page_num"/>
+        <result property="onlineNum" column="online_num"/>
+        <result property="offlineNum" column="offline_num"/>
+        <result property="senderNum" column="sender_num"/>
+        <result property="giftNum" column="gift_num"/>
+        <result property="msgNum" column="msg_num"/>
+    </resultMap>
+
+    <select id="roomShareUserStatics" resultMap="LivingRoomShareUserStaticsVo">
+        select sum(online_times) as view_page_num,
+        sum(if(status = 1, 1, 0)) as online_num,
+        sum(if(status = 2, 1, 0)) as offline_num,
+        sum(if(msg_num > 0, 1, 0)) as sender_num,
+        sum(gift_num) as gift_num,
+        sum(msg_num) as msg_num
+        from t_share_user_view_record
+        <where>
+            and deleted = 0
+            <if test="roomId != null">and room_id = #{roomId}</if>
+            <if test="start != null">and view_date >= #{start}</if>
+            <if test="stop != null">and #{stop} >= view_date</if>
+        </where>
+    </select>
+
+    <select id="countUserCntByOrgIdAndViewDate" resultType="java.lang.Long">
+        select count(id) as cnt
+        from t_share_user_view_record
+        <where>
+            and deleted = 0
+            <if test="orgId != null">and org_id = #{orgId}</if>
+            <if test="viewDate != null">and view_date = #{viewDate}</if>
+        </where>
+    </select>
+
+
+</mapper>

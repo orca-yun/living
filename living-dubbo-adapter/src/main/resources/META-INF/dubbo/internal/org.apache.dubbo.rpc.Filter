@@ -1,0 +1,2 @@
+interfaceLogFilter=ag.orca.living.dubbo.filter.InterfaceLogFilter
+providerOrcaExceptionFilter=ag.orca.living.dubbo.filter.ProviderOrcaExceptionFilter

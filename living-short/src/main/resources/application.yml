@@ -1,0 +1,20 @@
+server:
+  port: 8004
+
+spring:
+  profiles:
+    active: dev
+    include: ${spring.profiles.active}
+  application:
+    name: live-short
+  messages:
+    basename: i18n/messages
+
+# dubbo
+dubbo:
+  registry:
+    address: nacos://nacos:8848
+  application:
+    logger: slf4j
+    name: ${spring.application.name}
+    qos-enable: off

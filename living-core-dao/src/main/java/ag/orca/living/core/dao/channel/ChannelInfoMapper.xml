@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.channel.ChannelInfoMapper">
+
+    <resultMap id="ChannelInfo" type="ag.orca.living.core.entity.channel.ChannelInfo">
+        <result property="id" column="id"/>
+        <result property="orgId" column="org_id"/>
+        <result property="channelName" column="channel_name"/>
+        <result property="channelId" column="channel_id"/>
+        <result property="channelOwner" column="channel_owner"/>
+        <result property="contactPhone" column="contact_phone"/>
+        <result property="channelDescription" column="channel_description"/>
+        <result property="commissionRatio" column="commission_ratio"/>
+        <result property="paymentFee" column="payment_fee"/>
+        <result property="prepareCommissionRatio" column="prepare_commission_ratio"/>
+        <result property="commissionMethod" column="commission_method"/>
+        <result property="commissionPeriod" column="commission_period"/>
+        <result property="bankAccountType" column="bank_account_type"/>
+        <result property="receivingUnit" column="receiving_unit"/>
+        <result property="bankAccountNumber" column="bank_account_number"/>
+        <result property="bankBranch" column="bank_branch"/>
+        <result property="settlementCurrency" column="settlement_currency"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="sysInner" column="sys_inner"/>
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               org_id,
+               channel_name,
+               channel_id,
+               channel_owner,
+               contact_phone,
+               channel_description,
+               commission_ratio,
+               payment_fee,
+               prepare_commission_ratio,
+               commission_method,
+               commission_period,
+               bank_account_type,
+               receiving_unit,
+               bank_account_number,
+               bank_branch,
+               settlement_currency,
+               create_user,
+               update_user,
+               sys_inner,
+               deleted,
+               create_time,
+               update_time
+        from t_channel_info
+    </sql>
+
+    <select id="existsChannelId" resultType="java.lang.Integer">
+        select count(1)
+        from t_channel_info
+        where channel_id = #{channelId}
+    </select>
+
+    <insert id="insert" parameterType="ag.orca.living.core.entity.channel.ChannelInfo" useGeneratedKeys="true">
+        insert t_channel_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="channelName != null">channel_name,</if>
+            <if test="channelId != null">channel_id,</if>
+            <if test="orgId != null">org_id,</if>
+            <if test="channelOwner != null">channel_owner,</if>
+            <if test="contactPhone != null">contact_phone,</if>
+            <if test="channelDescription != null">channel_description,</if>
+
+            <if test="commissionRatio != null">commission_ratio,</if>
+            <if test="paymentFee != null">payment_fee,</if>
+            <if test="prepareCommissionRatio != null">prepare_commission_ratio,</if>
+            <if test="commissionMethod != null">commission_method,</if>
+            <if test="commissionPeriod != null">commission_period,</if>
+            <if test="bankAccountType != null">bank_account_type,</if>
+            <if test="receivingUnit != null">receiving_unit,</if>
+
+            <if test="bankAccountNumber != null">bank_account_number,</if>
+            <if test="bankBranch != null">bank_branch,</if>
+            <if test="settlementCurrency != null">settlement_currency,</if>
+            <if test="createUser != null">create_user,</if>
+            <if test="createTime != null">create_time,</if>
+
+            <if test="updateUser != null">update_user,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="sysInner != null">sys_inner,</if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="channelName != null">#{channelName},</if>
+            <if test="channelId != null">#{channelId},</if>
+            <if test="orgId != null">#{orgId},</if>
+            <if test="channelOwner != null">#{channelOwner},</if>
+            <if test="contactPhone != null">#{contactPhone},</if>
+            <if test="channelDescription != null">#{channelDescription},</if>
+
+            <if test="commissionRatio != null">#{commissionRatio},</if>
+            <if test="paymentFee != null">#{paymentFee},</if>
+            <if test="prepareCommissionRatio != null">#{prepareCommissionRatio},</if>
+            <if test="commissionMethod != null">#{commissionMethod},</if>
+            <if test="commissionPeriod != null">#{commissionPeriod},</if>
+            <if test="bankAccountType != null">#{bankAccountType},</if>
+            <if test="receivingUnit != null">#{receivingUnit},</if>
+
+            <if test="bankAccountNumber != null">#{bankAccountNumber},</if>
+            <if test="bankBranch != null">#{bankBranch},</if>
+            <if test="settlementCurrency != null">#{settlementCurrency},</if>
+            <if test="createUser != null">#{createUser},</if>
+            <if test="createTime != null">#{createTime},</if>
+
+            <if test="updateUser != null">#{updateUser},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="sysInner != null">#{sysInner},</if>
+
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="ag.orca.living.core.entity.channel.ChannelInfo">
+        update t_channel_info
+        set
+        <trim suffixOverrides=",">
+            <if test="channelName != null and channelName != ''">channel_name = #{channelName},</if>
+            <if test="channelOwner != null and channelOwner != ''">channel_owner = #{channelOwner},</if>
+            <if test="contactPhone != null and contactPhone != ''">contact_phone = #{contactPhone},</if>
+            <if test="channelDescription != null and channelDescription != ''">channel_description =
+                #{channelDescription},
+            </if>
+            <if test="prepareCommissionRatio != null">prepare_commission_ratio = #{prepareCommissionRatio},</if>
+            <if test="commissionMethod != null">commission_method = #{commissionMethod},</if>
+            <if test="commissionPeriod != null">commission_period = #{commissionPeriod},</if>
+            <if test="bankAccountType != null">bank_account_type = #{bankAccountType},</if>
+            <if test="receivingUnit != null and receivingUnit != ''">receiving_unit = #{receivingUnit},</if>
+            <if test="bankAccountNumber != null and bankAccountNumber != ''">bank_account_number =
+                #{bankAccountNumber},
+            </if>
+            <if test="bankBranch != null and bankBranch != ''">bank_branch = #{bankBranch},</if>
+            <if test="settlementCurrency != null">settlement_currency = #{settlementCurrency},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+            <if test="updateTime != null">update_time = #{updateTime}</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="logicDel">
+        update t_channel_info
+        set deleted     = 1,
+            update_time = #{dateTime}
+        where org_id = #{orgId}
+          and channel_id = #{channelId}
+          and deleted = 0
+    </update>
+
+
+    <select id="findFirstByChannelId" resultMap="ChannelInfo">
+        <include refid="selectColumns"/>
+        where channel_id = #{channelId} and deleted = 0
+    </select>
+
+    <select id="findListByChannelIdIn" resultMap="ChannelInfo">
+        <include refid="selectColumns"/>
+        where deleted = 0 and channel_id in
+        <foreach collection="channelIds" item="channelId" separator=", " open=" (" close=")">
+            #{channelId}
+        </foreach>
+    </select>
+
+    <select id="findListByOrgIdAndNameLike" resultMap="ChannelInfo">
+        <include refid="selectColumns"/>
+        <where>
+            and deleted = 0 and org_id =#{orgId}
+            <if test="channelName != null and channelName !=''">and channel_name like concat(#{channelName},'%')</if>
+            <if test="commissionRatio != null">and commission_ratio = #{commissionRatio}</if>
+            <if test="commissionMethod != null">and commission_method = #{commissionMethod}</if>
+            <if test="commissionPeriod != null">and commission_period = #{commissionPeriod}</if>
+        </where>
+    </select>
+
+    <select id="findAllChannelByOrgId" resultMap="ChannelInfo">
+        <include refid="selectColumns"/>
+        WHERE deleted = 0 and org_id =#{orgId}
+    </select>
+
+
+    <select id="findDefaultChannelId" resultType="java.lang.Long">
+        select channel_id
+        from t_channel_info
+        where org_id = #{orgId}
+          and deleted = 0
+        order by id
+        limit 1
+    </select>
+
+    <update id="updateCommissionRatio">
+        update t_channel_info
+        set commission_ratio         = prepare_commission_ratio,
+            prepare_commission_ratio = null,
+            update_time              = #{dateTime}
+        where deleted = 0
+          and prepare_commission_ratio is not null
+    </update>
+
+
+</mapper>

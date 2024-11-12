@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.room.LivingRoomMarketGoodsMapper">
+
+    <resultMap id="LivingRoomMarketGoods" type="ag.orca.living.core.entity.room.LivingRoomMarketGoods">
+        <result property="id" column="id"/>
+        <result property="orgId" column="org_id"/>
+        <result property="roomId" column="room_id"/>
+
+        <result property="btnTxt" column="btn_txt"/>
+        <result property="countDown" column="count_down"/>
+        <result property="showStyle" column="show_style"/>
+
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               org_id,
+               room_id,
+               btn_txt,
+               count_down,
+               show_style,
+               deleted,
+               create_time,
+               update_time
+        from t_living_room_market_goods
+    </sql>
+
+    <insert id="insert" parameterType="ag.orca.living.core.entity.room.LivingRoomMarketGoods" useGeneratedKeys="true"
+            keyProperty="id">
+        insert t_living_room_market_goods
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orgId != null">org_id,</if>
+            <if test="roomId != null">room_id,</if>
+            <if test="btnTxt != null">btn_txt,</if>
+            <if test="countDown != null">count_down,</if>
+            <if test="showStyle != null">show_style,</if>
+
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orgId != null">#{orgId},</if>
+            <if test="roomId != null">#{roomId},</if>
+            <if test="btnTxt != null">#{btnTxt},</if>
+            <if test="countDown != null">#{countDown},</if>
+            <if test="showStyle != null">#{showStyle},</if>
+
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="ag.orca.living.core.entity.room.LivingRoomMarketGoods">
+        update t_living_room_market_goods
+        set
+        <trim suffixOverrides=",">
+            <if test="orgId != null">org_id = #{orgId},</if>
+            <if test="roomId != null">room_id = #{roomId},</if>
+            <if test="btnTxt != null">btn_txt = #{btnTxt},</if>
+            <if test="countDown != null">count_down = #{countDown},</if>
+            <if test="showStyle != null">show_style = #{showStyle},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+
+    <select id="findLivingRoomMarketGoodsByRoomId" resultMap="LivingRoomMarketGoods">
+        <include refid="selectColumns"/>
+        where
+        room_id = #{roomId}
+        and deleted = 0
+        limit 1
+    </select>
+
+
+</mapper>

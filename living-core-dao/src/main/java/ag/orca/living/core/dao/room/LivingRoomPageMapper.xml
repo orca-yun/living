@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.room.LivingRoomPageMapper">
+
+    <resultMap id="LivingRoomPage" type="ag.orca.living.core.entity.room.LivingRoomPage">
+        <result property="id" column="id"/>
+        <result property="orgId" column="org_id"/>
+        <result property="roomId" column="room_id"/>
+        <result property="showDraw" column="show_draw"/>
+        <result property="showPpt" column="show_ppt"/>
+        <result property="pcSwitch" column="pc_switch"/>
+        <result property="mobileLayout" column="mobile_layout"/>
+        <result property="padPcLayout" column="pad_pc_layout"/>
+        <result property="bgImage" column="bg_image"/>
+        <result property="watermark" column="watermark"/>
+
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               org_id,
+               room_id,
+               show_draw,
+               show_ppt,
+               pc_switch,
+               mobile_layout,
+               pad_pc_layout,
+               bg_image,
+               watermark,
+               deleted,
+               create_time,
+               update_time
+        from t_living_room_page
+    </sql>
+
+    <select id="findLivingRoomPageByRoomId" resultMap="LivingRoomPage">
+        <include refid="selectColumns"/>
+        where
+        room_id = #{roomId}
+        and deleted = 0
+        limit 1
+    </select>
+
+    <insert id="insert" parameterType="ag.orca.living.core.entity.room.LivingRoomPage" useGeneratedKeys="true"
+            keyProperty="id">
+        insert t_living_room_page
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orgId != null">org_id,</if>
+            <if test="roomId != null">room_id,</if>
+            <if test="showDraw != null">show_draw,</if>
+            <if test="showPpt != null">show_ppt,</if>
+            <if test="pcSwitch != null">pc_switch,</if>
+            <if test="mobileLayout != null">mobile_layout,</if>
+            <if test="padPcLayout != null">pad_pc_layout,</if>
+            <if test="bgImage != null">bg_image,</if>
+            <if test="watermark != null">watermark,</if>
+
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orgId != null">#{orgId},</if>
+            <if test="roomId != null">#{roomId},</if>
+            <if test="showDraw != null">#{showDraw},</if>
+            <if test="showPpt != null">#{showPpt},</if>
+            <if test="pcSwitch != null">#{pcSwitch},</if>
+            <if test="mobileLayout != null">#{mobileLayout},</if>
+            <if test="padPcLayout != null">#{padPcLayout},</if>
+            <if test="bgImage != null">#{bgImage},</if>
+            <if test="watermark != null">#{watermark},</if>
+
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="ag.orca.living.core.entity.room.LivingRoomPage">
+        update t_living_room_page
+        set
+        <trim suffixOverrides=",">
+            <if test="orgId != null">org_id = #{orgId},</if>
+            <if test="roomId != null">room_id = #{roomId},</if>
+            <if test="showDraw != null">show_draw = #{showDraw},</if>
+            <if test="showPpt != null">show_ppt = #{showPpt},</if>
+            <if test="pcSwitch != null">pc_switch = #{pcSwitch},</if>
+            <if test="mobileLayout != null">mobile_layout = #{mobileLayout},</if>
+            <if test="padPcLayout != null">pad_pc_layout = #{padPcLayout},</if>
+            <if test="bgImage != null">bg_image = #{bgImage},</if>
+            <if test="watermark != null">watermark = #{watermark},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+
+</mapper>

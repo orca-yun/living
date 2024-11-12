@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.org.OrganizationMapper">
+
+
+    <resultMap id="Organization" type="ag.orca.living.core.entity.org.Organization">
+        <result property="id" column="id"/>
+
+        <result property="name" column="name"/>
+        <result property="orgCode" column="org_code"/>
+        <result property="orgLogo" column="org_logo"/>
+        <result property="orgRoomBg" column="org_room_bg"/>
+        <result property="notice" column="notice"/>
+        <result property="livingPrice" column="living_price"/>
+        <result property="videoPrice" column="video_price"/>
+        <result property="storagePrice" column="storage_price"/>
+
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               name,
+               org_code,
+               org_logo,
+               org_room_bg,
+               notice,
+               living_price,
+               video_price,
+               storage_price,
+               deleted,
+               create_time,
+               update_time
+        from t_organization
+    </sql>
+
+    <insert id="insert" parameterType="ag.orca.living.core.entity.org.Organization">
+        insert t_organization
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="orgCode != null and orgCode != ''">org_code,</if>
+            <if test="orgLogo != null and orgLogo != ''">org_logo,</if>
+            <if test="orgRoomBg != null and orgRoomBg != ''">org_room_bg,</if>
+            <if test="notice != null">notice,</if>
+            <if test="livingPrice != null">living_price,</if>
+            <if test="videoPrice != null">video_price,</if>
+            <if test="storagePrice != null">storage_price,</if>
+
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="orgCode != null and orgCode != ''">#{orgCode},</if>
+            <if test="orgLogo != null and orgLogo != ''">#{orgLogo},</if>
+            <if test="orgRoomBg != null and orgRoomBg != ''">#{orgRoomBg},</if>
+            <if test="notice != null">#{notice},</if>
+            <if test="livingPrice != null">#{livingPrice},</if>
+            <if test="videoPrice != null">#{videoPrice},</if>
+            <if test="storagePrice != null">#{storagePrice},</if>
+
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+
+    </insert>
+
+    <update id="update" parameterType="ag.orca.living.core.entity.org.Organization">
+        update t_organization
+        set
+        <trim suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="orgCode != null and orgCode != ''">org_code = #{orgCode},</if>
+            <if test="orgLogo != null and orgLogo != ''">org_logo = #{orgLogo},</if>
+            <if test="orgRoomBg != null and orgRoomBg != ''">org_room_bg = #{orgRoomBg},</if>
+            <if test="notice != null">notice = #{notice},</if>
+            <if test="livingPrice != null">living_price = #{livingPrice},</if>
+            <if test="videoPrice != null">video_price = #{videoPrice},</if>
+            <if test="storagePrice != null">storage_price = #{storagePrice},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="findOrgById" resultMap="Organization">
+        <include refid="selectColumns"/>
+        where id = #{id}
+    </select>
+    <select id="findAll" resultMap="Organization">
+        <include refid="selectColumns"/>
+    </select>
+
+</mapper>

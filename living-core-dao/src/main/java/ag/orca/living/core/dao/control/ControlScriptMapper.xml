@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ag.orca.living.core.dao.control.ControlScriptMapper">
+
+    <resultMap id="ControlScript" type="ag.orca.living.core.entity.control.ControlScript">
+        <id property="id" column="id"/>
+        <result property="orgId" column="org_id"/>
+        <result property="roomId" column="room_id"/>
+        <result property="robotId" column="robot_id"/>
+        <result property="robotCode" column="robot_code"/>
+        <result property="robotNickname" column="robot_nickname"/>
+        <result property="robotHeadIco" column="robot_head_ico"/>
+        <result property="messageType" column="message_type"/>
+        <result property="content" column="content"/>
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               org_id,
+               room_id,
+               robot_id,
+               robot_code,
+               robot_nickname,
+               robot_head_ico,
+               message_type,
+               content,
+               deleted,
+               create_time,
+               update_time
+        from t_control_script
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ControlScript">
+        <include refid="selectColumns"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectByRoomId" resultMap="ControlScript">
+        <include refid="selectColumns"/>
+        where room_id = #{roomId}
+        and deleted = 0
+    </select>
+
+    <select id="selectListByIds" resultMap="ControlScript">
+        <include refid="selectColumns"/>
+        where deleted = 0 and id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <insert id="insertBatch">
+        insert into t_control_script
+        ( org_id, room_id
+        , robot_id, robot_code, robot_nickname
+        , robot_head_ico, message_type, content
+        , deleted, create_time, update_time)
+        values
+        <if test="records != null and records.size() > 0">
+            <foreach collection="records" open="" close="" separator="," item="record">
+                ( #{record.orgId,jdbcType=BIGINT}, #{record.roomId,jdbcType=BIGINT}
+                , #{record.robotId,jdbcType=BIGINT}, #{record.robotCode,jdbcType=VARCHAR},
+                #{record.robotNickname,jdbcType=VARCHAR}
+                , #{record.robotHeadIco,jdbcType=VARCHAR}, #{record.messageType,jdbcType=INTEGER},
+                #{record.content,jdbcType=VARCHAR}
+                , #{record.deleted,jdbcType=INTEGER}, #{record.createTime,jdbcType=TIMESTAMP},
+                #{record.updateTime,jdbcType=TIMESTAMP})
+            </foreach>
+        </if>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="ag.orca.living.core.entity.control.ControlScript">
+        update t_control_script
+        <set>
+            <if test="orgId != null">
+                org_id = #{orgId},
+            </if>
+            <if test="roomId != null">
+                room_id = #{roomId},
+            </if>
+            <if test="robotId != null">
+                robot_id = #{robotId},
+            </if>
+            <if test="robotCode != null">
+                robot_code = #{robotCode},
+            </if>
+            <if test="robotNickname != null">
+                robot_nickname = #{robotNickname},
+            </if>
+            <if test="robotHeadIco != null">
+                robot_head_ico = #{robotHeadIco},
+            </if>
+            <if test="messageType != null">
+                message_type = #{messageType},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="logicDel">
+        update t_control_script
+        set deleted = 1, update_time = #{dateTime}
+        where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+</mapper>

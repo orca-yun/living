@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.room.LivingRoomPermissionMapper">
+
+
+    <resultMap id="LivingRoomPermission" type="ag.orca.living.core.entity.room.LivingRoomPermission">
+        <result property="id" column="id"/>
+        <result property="orgId" column="org_id"/>
+        <result property="roomId" column="room_id"/>
+
+        <result property="permissionType" column="permission_type"/>
+        <result property="permissionJson" column="permission_json"/>
+
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               org_id,
+               room_id,
+               permission_type,
+               permission_json,
+               deleted,
+               create_time,
+               update_time
+        from t_living_room_permission
+    </sql>
+
+    <select id="findLivingRoomPermissionByRoomId" resultMap="LivingRoomPermission">
+        <include refid="selectColumns"/>
+        where
+        room_id = #{roomId}
+        and deleted = 0
+        limit 1
+    </select>
+
+    <insert id="insert" parameterType="ag.orca.living.core.entity.room.LivingRoomPermission" useGeneratedKeys="true"
+            keyProperty="id">
+        insert t_living_room_permission
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orgId != null">org_id,</if>
+            <if test="roomId != null">room_id,</if>
+            <if test="permissionType != null">permission_type,</if>
+            <if test="permissionJson != null">permission_json,</if>
+
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orgId != null">#{orgId},</if>
+            <if test="roomId != null">#{roomId},</if>
+            <if test="permissionType != null">#{permissionType},</if>
+            <if test="permissionJson != null">#{permissionJson},</if>
+
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="ag.orca.living.core.entity.room.LivingRoomPermission">
+        update t_living_room_permission
+        set
+        <trim suffixOverrides=",">
+            <if test="orgId != null">org_id = #{orgId},</if>
+            <if test="roomId != null">room_id = #{roomId},</if>
+            <if test="permissionType != null">permission_type = #{permissionType},</if>
+            <if test="permissionJson != null">permission_json = #{permissionJson},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<included>
+    <property name="max_file_history" value="5"/>
+    <property name="max_file_size" value="50MB"/>
+    <property name="total_size_cap" value="1GB"/>
+
+    <include resource="ag/orca/living/living-console.xml"/>
+    <include resource="ag/orca/living/living-error.xml"/>
+    <include resource="ag/orca/living/living-info.xml"/>
+
+    <appender name="async_info_file" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 是否阻塞，避免引起业务线程阻塞 -->
+        <neverBlock>true</neverBlock>
+        <!-- 不丢失日志.默认如果队列的80%已满(<discardingThreshold >20</discardingThreshold>),则会丢弃       TRACT、DEBUG、INFO级别的日志 -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+        <queueSize>1024</queueSize>
+        <!-- 添加附加的appender,最多只能添加一个 -->
+        <appender-ref ref="info_file"/>
+    </appender>
+
+    <logger name="org.springframework" level="info"/>
+    <logger name="org.springframework.boot.web" level="info"/>
+    <logger name="org.hibernate" level="warn"/>
+    <logger name="org.apache.catalina" level="warn"/>
+    <logger name="ag.orca" level="info"/>
+    <logger name="ag.orca.living.core.dao" level="error"/>
+
+
+</included>

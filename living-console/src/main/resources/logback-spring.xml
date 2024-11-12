@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+
+    <property name="log.path" value="./logs"/>
+    <property name="app.name" value="live-console"/>
+    <include resource="ag/orca/living/living-base.xml"/>
+
+    <root level="info">
+        <appender-ref ref="console"/>
+        <appender-ref ref="err_file"/>
+        <appender-ref ref="async_info_file"/>
+    </root>
+
+</configuration>

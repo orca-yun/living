@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.room.LivingRoomMarketGoodsItemMapper">
+
+    <resultMap id="LivingRoomMarketGoodsItem" type="ag.orca.living.core.entity.room.LivingRoomMarketGoodsItem">
+        <result property="id" column="id"/>
+        <result property="orgId" column="org_id"/>
+        <result property="roomId" column="room_id"/>
+
+        <result property="goodsLibId" column="goods_lib_id"/>
+        <result property="name" column="name"/>
+        <result property="img" column="img"/>
+        <result property="goodType" column="good_type"/>
+        <result property="originalPrice" column="original_price"/>
+        <result property="price" column="price"/>
+        <result property="payType" column="pay_type"/>
+        <result property="miniPage" column="mini_page"/>
+        <result property="jumpPage" column="jump_page"/>
+        <result property="sellStatus" column="sell_status"/>
+        <result property="priority" column="priority"/>
+        <result property="qrcode" column="qrcode"/>
+        <result property="bounds" column="bounds"/>
+
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               org_id,
+               room_id,
+               goods_lib_id,
+               name,
+               img,
+               good_type,
+               original_price,
+               price,
+               pay_type,
+               mini_page,
+               jump_page,
+               qrcode,
+               sell_status,
+               priority,
+               bounds,
+               deleted,
+               create_time,
+               update_time
+        from t_living_room_market_goods_item
+    </sql>
+
+    <select id="findById" resultMap="LivingRoomMarketGoodsItem">
+        <include refid="selectColumns"/>
+        where
+        id= #{id} and deleted = 0
+    </select>
+
+    <insert id="insert" parameterType="ag.orca.living.core.entity.room.LivingRoomMarketGoodsItem"
+            useGeneratedKeys="true" keyProperty="id">
+        insert t_living_room_market_goods_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orgId != null">org_id,</if>
+            <if test="roomId != null">room_id,</if>
+            <if test="goodsLibId != null">goods_lib_id,</if>
+            <if test="name != null">name,</if>
+            <if test="img != null">img,</if>
+            <if test="goodType != null">good_type,</if>
+            <if test="originalPrice != null">original_price,</if>
+            <if test="price != null">price,</if>
+            <if test="payType != null">pay_type,</if>
+            <if test="miniPage != null">mini_page,</if>
+            <if test="jumpPage != null">jump_page,</if>
+            <if test="qrcode != null">qrcode,</if>
+            <if test="sellStatus != null">sell_status,</if>
+            <if test="priority != null">priority,</if>
+            <if test="bounds != null">bounds,</if>
+
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orgId != null">#{orgId},</if>
+            <if test="roomId != null">#{roomId},</if>
+            <if test="goodsLibId != null">#{goodsLibId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="img != null">#{img},</if>
+            <if test="goodType != null">#{goodType},</if>
+            <if test="originalPrice != null">#{originalPrice},</if>
+            <if test="price != null">#{price},</if>
+            <if test="payType != null">#{payType},</if>
+            <if test="miniPage != null">#{miniPage},</if>
+            <if test="jumpPage != null">#{jumpPage},</if>
+            <if test="qrcode != null">#{qrcode},</if>
+            <if test="sellStatus != null">#{sellStatus},</if>
+            <if test="priority != null">#{priority},</if>
+            <if test="bounds != null">#{bounds},</if>
+
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+
+    <update id="update" parameterType="ag.orca.living.core.entity.room.LivingRoomMarketGoodsItem">
+        update t_living_room_market_goods_item
+        set
+        <trim suffixOverrides=",">
+            <if test="orgId != null">org_id = #{orgId},</if>
+            <if test="roomId != null">room_id = #{roomId},</if>
+            <if test="goodsLibId != null">goods_lib_id = #{goodsLibId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="img != null">img = #{img},</if>
+            <if test="goodType != null">good_type = #{goodType},</if>
+            <if test="originalPrice != null">original_price = #{originalPrice},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="payType != null">pay_type = #{payType},</if>
+            <if test="miniPage != null">mini_page = #{miniPage},</if>
+            <if test="jumpPage != null">jump_page = #{jumpPage},</if>
+            <if test="qrcode != null">qrcode = #{qrcode},</if>
+            <if test="sellStatus != null">sell_status = #{sellStatus},</if>
+            <if test="priority != null">priority = #{priority},</if>
+            <if test="bounds != null">bounds = #{bounds},</if>
+
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="findListByRoomId" resultMap="LivingRoomMarketGoodsItem">
+        <include refid="selectColumns"/>
+        where
+        room_id = #{roomId} and deleted = 0
+    </select>
+
+    <select id="findListByRoomIdAndSellStatus" resultMap="LivingRoomMarketGoodsItem">
+        <include refid="selectColumns"/>
+        where
+        room_id = #{roomId} and deleted = 0
+        and sell_status in
+        <foreach collection="sellStatusList" item="sellStatus" open="(" close=")" separator=",">
+            #{sellStatus}
+        </foreach>
+    </select>
+
+    <update id="logicDel">
+        update t_living_room_market_goods_item
+        set deleted = 1, update_time = #{dateTime}
+        <where>
+            <if test="orgId != null">and org_id = #{orgId}</if>
+            and id in
+            <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </where>
+
+
+    </update>
+
+    <update id="updateSellStatusById">
+        update t_living_room_market_goods_item
+        set sell_status = #{sellStatus},
+            update_time = #{dateTime}
+        where id = #{id}
+    </update>
+    <update id="updatePriorityById">
+        update t_living_room_market_goods_item
+        set priority    = #{priority},
+            update_time = #{dateTime}
+        where id = #{id}
+    </update>
+    <update id="logicDelByRoomId">
+        update t_living_room_market_goods_item
+        set deleted     = 1,
+            update_time = #{dateTime}
+        where room_id = #{roomId}
+    </update>
+
+    <update id="batchUpdateSellStatus">
+        update t_living_room_market_goods_item
+        set sell_status = #{sellStatus}, update_time = #{dateTime}
+        where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <select id="findListByIds" resultMap="LivingRoomMarketGoodsItem">
+        <include refid="selectColumns"/>
+        where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="countGoodsWithUsed" resultType="java.lang.Integer">
+        select count(1) from t_living_room_market_goods_item
+        <where>
+            and deleted = 0
+            <if test="goodsLibIds != null and goodsLibIds.size() > 0">
+                and goods_lib_id in
+                <foreach collection="goodsLibIds" open="(" close=")" separator="," item="glId">
+                    #{glId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.share.UserInfoMapper">
+
+    <resultMap id="UserInfo" type="ag.orca.living.core.entity.share.UserInfo">
+        <result property="id" column="id"/>
+        <result property="openId" column="open_id"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="headImageUrl" column="head_image_url"/>
+        <result property="unionId" column="union_id"/>
+
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               open_id,
+               nick_name,
+               head_image_url,
+               union_id,
+               deleted,
+               create_time,
+               update_time
+        from t_user_info
+    </sql>
+
+    <select id="findByOpenId" resultMap="UserInfo">
+        <include refid="selectColumns"/>
+        where open_id = #{openId}
+    </select>
+
+    <select id="getUserInfoById" resultMap="UserInfo">
+        <include refid="selectColumns"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="ag.orca.living.core.entity.share.UserInfo" useGeneratedKeys="true"
+            keyProperty="id">
+        insert t_user_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="openId != null">open_id,</if>
+            <if test="nickName != null">nick_name,</if>
+            <if test="headImageUrl != null and headImageUrl != ''">head_image_url,</if>
+            <if test="unionId != null and unionId != ''">union_id,</if>
+
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="openId != null">#{openId},</if>
+            <if test="nickName != null">#{nickName},</if>
+            <if test="headImageUrl != null and headImageUrl != ''">#{headImageUrl},</if>
+            <if test="unionId != null and unionId != ''">#{unionId},</if>
+
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateByOpenId">
+        update t_user_info
+        set
+        <trim suffixOverrides=",">
+            <if test="nickName != null and nickName != ''">nick_name = #{nickName},</if>
+            <if test="headImageUrl != null and headImageUrl != ''">head_image_url = #{headImageUrl},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        WHERE open_id = #{openId}
+    </update>
+
+
+</mapper>

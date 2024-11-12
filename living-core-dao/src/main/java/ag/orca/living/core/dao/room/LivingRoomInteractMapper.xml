@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ag.orca.living.core.dao.room.LivingRoomInteractMapper">
+
+    <resultMap id="LivingRoomInteract" type="ag.orca.living.core.entity.room.LivingRoomInteract">
+        <result property="id" column="id"/>
+        <result property="orgId" column="org_id"/>
+        <result property="roomId" column="room_id"/>
+
+        <result property="loginTips" column="login_tips"/>
+        <result property="allMute" column="all_mute"/>
+        <result property="msgApprove" column="msg_approve"/>
+        <result property="exemptEnable" column="exempt_enable"/>
+        <result property="exemptWordId" column="exempt_word_id"/>
+        <result property="tupleEnable" column="tuple_enable"/>
+        <result property="tupleNum" column="tuple_num"/>
+
+        <result property="deleted" column="deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        select id,
+               org_id,
+               room_id,
+               login_tips,
+               all_mute,
+               msg_approve,
+               exempt_enable,
+               exempt_word_id,
+               tuple_enable,
+               tuple_num,
+               deleted,
+               create_time,
+               update_time
+        from t_living_room_interact
+    </sql>
+
+    <select id="findLivingRoomInteractByRoomId" resultMap="LivingRoomInteract">
+        <include refid="selectColumns"/>
+        where
+        room_id = #{roomId}
+        and deleted = 0
+        limit 1
+    </select>
+    <select id="countExemptWithUsed" resultType="java.lang.Integer">
+        select count(1) from t_living_room_interact
+        <where>
+            and deleted = 0
+            <if test="exemptWordIds != null and exemptWordIds.size() > 0">
+                and exempt_word_id in
+                <foreach collection="exemptWordIds" open="(" close=")" separator="," item="ewId">
+                    #{ewId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="ag.orca.living.core.entity.room.LivingRoomInteract" useGeneratedKeys="true"
+            keyProperty="id">
+        insert t_living_room_interact
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orgId != null">org_id,</if>
+            <if test="roomId != null">room_id,</if>
+
+            <if test="loginTips != null">login_tips,</if>
+            <if test="allMute != null">all_mute,</if>
+            <if test="msgApprove != null">msg_approve,</if>
+            <if test="exemptEnable != null">exempt_enable,</if>
+            <if test="exemptWordId != null">exempt_word_id,</if>
+            <if test="tupleEnable != null">tuple_enable,</if>
+            <if test="tupleNum != null">tuple_num,</if>
+
+            <if test="deleted != null">deleted,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orgId != null">#{orgId},</if>
+            <if test="roomId != null">#{roomId},</if>
+
+            <if test="loginTips != null">#{loginTips},</if>
+            <if test="allMute != null">#{allMute},</if>
+            <if test="msgApprove != null">#{msgApprove},</if>
+            <if test="exemptEnable != null">#{exemptEnable},</if>
+            <if test="exemptWordId != null">#{exemptWordId},</if>
+            <if test="tupleEnable != null">#{tupleEnable},</if>
+            <if test="tupleNum != null">#{tupleNum},</if>
+
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="ag.orca.living.core.entity.room.LivingRoomInteract">
+        update t_living_room_interact
+        set
+        <trim suffixOverrides=",">
+            <if test="orgId != null">org_id = #{orgId},</if>
+            <if test="roomId != null">room_id = #{roomId},</if>
+
+            <if test="loginTips != null">login_tips = #{loginTips},</if>
+            <if test="allMute != null">all_mute = #{allMute},</if>
+            <if test="msgApprove != null">msg_approve = #{msgApprove},</if>
+            <if test="exemptEnable != null">exempt_enable = #{exemptEnable},</if>
+            <if test="exemptWordId != null">exempt_word_id = #{exemptWordId},</if>
+            <if test="tupleEnable != null">tuple_enable = #{tupleEnable},</if>
+            <if test="tupleNum != null">tuple_num = #{tupleNum},</if>
+
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+
+</mapper>
