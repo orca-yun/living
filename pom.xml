@@ -69,7 +69,7 @@
 
         <elasticjob.version>3.0.4</elasticjob.version>
 
-        <springdoc.version>[2.2.0,)</springdoc.version>
+        <springdoc.version>2.2.0</springdoc.version>
         <swagger-annotations.version>2.2.19</swagger-annotations.version>
 
         <commons-collections4.version>4.4</commons-collections4.version>
