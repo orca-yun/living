@@ -64,7 +64,7 @@ public class OrganizationRo extends BaseBean {
      * 企业直播单价
      */
     @Schema(name = "livingPrice", description = "企业直播单价")
-    @NotBlank(message = "企业直播单价不能为空")
+    @NotNull(message = "企业直播单价不能为空")
     @Min(value = 1, message = "企业直播单价不能低于0.01元")
     private Long livingPrice;
 
@@ -72,7 +72,7 @@ public class OrganizationRo extends BaseBean {
      * 企业点播单价
      */
     @Schema(name = "videoPrice", description = "企业点播单价")
-    @NotBlank(message = "企业点播单价不能为空")
+    @NotNull(message = "企业点播单价不能为空")
     @Min(value = 1, message = "企业点播单价不能低于0.01元")
     private Long videoPrice;
 
