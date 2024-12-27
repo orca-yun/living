@@ -18,11 +18,11 @@
 
 - [运营管理端](https://github.com/orca-yun/orca-admin)
 
-- [直播助播端](https://github.com/orca-yun/assis-client)
+- [直播助播端](https://github.com/orca-yun/assis-client)(联系+V: pink-hello 索取)
 
-- [直播主播端](https://github.com/orca-yun/anchor-client)
+- [直播主播端](https://github.com/orca-yun/anchor-client)(联系+V: pink-hello 索取)
 
-- [直播观看端](https://github.com/orca-yun/audience-client)
+- [直播观看端](https://github.com/orca-yun/audience-client)(联系+V: pink-hello 索取)
 
 - [直播后端服务](https://github.com/orca-yun/living)
 
