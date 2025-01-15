@@ -4,11 +4,11 @@
 
 - 公众号
 
-  ![pinkhello](./qrcode.jpg)
+  ![pinkhello](./example/qrcode.jpg)
 
 - 个人🌍
 
-  ![v](./qrcodegr.jpg)
+  ![v](./example/qrcodegr.jpg)
 
 ## 项目介绍
 
