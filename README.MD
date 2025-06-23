@@ -34,10 +34,10 @@
 
 
 ## Demo 地址 [服务器已失效， 需要的请 +v 索取最新的 demo 地址 ]
-- 运营端 https://admin.orcacl.com  hwjy/hwjy123
-- 助理端 https://admin.orcacl.com/app/assistant
-- 主播端 https://admin.orcacl.com/app/anchor
-- 观看端 http://d.kfc1.cn/c6e753cef47
+- 运营端 [https://admin.orcacl.com](https://dash.linchengxuan.cn/) 【hwjy/test100】
+- 助理端 [https://admin.orcacl.com/app/assistant](https://dash.linchengxuan.cn/app/assistant)
+- 主播端 [https://admin.orcacl.com/app/anchor](https://dash.linchengxuan.cn/app/assistant)
+- 观看端 [http://d.kfc1.cn/c6e753cef47](http://t.linchengxuan.cn/a9e8a427bdbba)
 
 # 核心需要修改配置
 
