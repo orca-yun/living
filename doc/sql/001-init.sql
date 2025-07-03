@@ -14,24 +14,24 @@ create table if not exists t_sys_robot
 
 insert into t_sys_robot (nickname, head_ico, deleted, create_time, update_time)
 values
-    ('自由人', 'http://xiushi-web.oss-cn-shanghai.aliyuncs.com/upload/28113/custom/da139da756524ce9864e5c3c81bdfacc',
+    ('令和れい', 'https://github.com/gfriends/gfriends/blob/master/Content/1-Diaz/%E4%BB%A4%E5%92%8C%E3%82%8C%E3%81%84.jpg',
      0, now(), now()),
-    ('普通', 'http://xiushi-web.oss-cn-shanghai.aliyuncs.com/upload/28113/custom/45b0c01fdee540d4aca9f45c48baa3a4',
+    ('前田えま', 'https://github.com/gfriends/gfriends/blob/master/Content/1-Diaz/%E5%89%8D%E7%94%B0%E3%81%88%E3%81%BE.jpg',
      0, now(), now()),
-    ('7', 'http://xiushi-web.oss-cn-shanghai.aliyuncs.com/upload/28113/custom/5d50037b852a453a96e3156abfc08e0d', 0,
+    ('卯水咲流', 'https://github.com/gfriends/gfriends/blob/master/Content/1-Diaz/%E5%8D%AF%E6%B0%B4%E5%92%B2%E6%B5%81.jpg', 0,
      now(), now()),
-    ('努力拼搏',
-     'http://xiushi-web.oss-cn-shanghai.aliyuncs.com/upload/28113/custom/b1864715e00744868d8f3656a9fc01c3', 0, now(),
+    ('涼宮琴音',
+     'https://github.com/gfriends/gfriends/blob/master/Content/1-Diaz/%E6%B6%BC%E5%AE%AE%E7%90%B4%E9%9F%B3.jpg', 0, now(),
      now()),
-    ('   琴 ',
-     'http://xiushi-web.oss-cn-shanghai.aliyuncs.com/upload/28113/custom/cdb3f492d8694a0698d04f9ba7a15eec', 0, now(),
+    ('杏奈',
+     'https://github.com/gfriends/gfriends/blob/master/Content/1-Diaz/%E6%9D%8F%E5%A5%88.jpg', 0, now(),
      now()),
-    ('🍑', 'http://xiushi-web.oss-cn-shanghai.aliyuncs.com/upload/28113/custom/3791a0a9b5904016b68d366d38094eca', 0,
+    ('七海ティナ', 'https://github.com/gfriends/gfriends/blob/master/Content/1-FALENO/%E4%B8%83%E6%B5%B7%E3%83%86%E3%82%A3%E3%83%8A.jpg', 0,
      now(), now()),
-    ('凝月', 'http://xiushi-web.oss-cn-shanghai.aliyuncs.com/upload/28113/custom/b332fca59bd04459aa7582c64f709271',
+    ('AIKA', 'https://github.com/gfriends/gfriends/blob/master/Content/4-Kawaii/AIKA.jpg',
      0, now(), now()),
-    ('没什',
-     'http://xiushi-web.oss-cn-shanghai.aliyuncs.com/upload/28113/custom/e3a59944aa944f03a9532cbda67acb24', 0, now(),
+    ('三上悠亜',
+     'https://github.com/gfriends/gfriends/blob/master/Content/2-Juicy-Honey/%E4%B8%89%E4%B8%8A%E6%82%A0%E4%BA%9C.jpg', 0, now(),
      now());
 
 
