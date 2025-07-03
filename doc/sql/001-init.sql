@@ -14,24 +14,24 @@ create table if not exists t_sys_robot
 
 insert into t_sys_robot (nickname, head_ico, deleted, create_time, update_time)
 values
-    ('令和れい', 'https://github.com/gfriends/gfriends/blob/master/Content/1-Diaz/%E4%BB%A4%E5%92%8C%E3%82%8C%E3%81%84.jpg',
+    ('令和れい', 'https://gh-proxy.com/github.com/gfriends/gfriends/blob/master/Content/1-Diaz/%E4%BB%A4%E5%92%8C%E3%82%8C%E3%81%84.jpg',
      0, now(), now()),
-    ('前田えま', 'https://github.com/gfriends/gfriends/blob/master/Content/1-Diaz/%E5%89%8D%E7%94%B0%E3%81%88%E3%81%BE.jpg',
+    ('前田えま', 'https://gh-proxy.com/github.com/gfriends/gfriends/blob/master/Content/1-Diaz/%E5%89%8D%E7%94%B0%E3%81%88%E3%81%BE.jpg',
      0, now(), now()),
-    ('卯水咲流', 'https://github.com/gfriends/gfriends/blob/master/Content/1-Diaz/%E5%8D%AF%E6%B0%B4%E5%92%B2%E6%B5%81.jpg', 0,
+    ('卯水咲流', 'https://gh-proxy.com/github.com/gfriends/gfriends/blob/master/Content/1-Diaz/%E5%8D%AF%E6%B0%B4%E5%92%B2%E6%B5%81.jpg', 0,
      now(), now()),
     ('涼宮琴音',
-     'https://github.com/gfriends/gfriends/blob/master/Content/1-Diaz/%E6%B6%BC%E5%AE%AE%E7%90%B4%E9%9F%B3.jpg', 0, now(),
+     'https://gh-proxy.com/github.com/gfriends/gfriends/blob/master/Content/1-Diaz/%E6%B6%BC%E5%AE%AE%E7%90%B4%E9%9F%B3.jpg', 0, now(),
      now()),
     ('杏奈',
-     'https://github.com/gfriends/gfriends/blob/master/Content/1-Diaz/%E6%9D%8F%E5%A5%88.jpg', 0, now(),
+     'https://gh-proxy.com/github.com/gfriends/gfriends/blob/master/Content/1-Diaz/%E6%9D%8F%E5%A5%88.jpg', 0, now(),
      now()),
-    ('七海ティナ', 'https://github.com/gfriends/gfriends/blob/master/Content/1-FALENO/%E4%B8%83%E6%B5%B7%E3%83%86%E3%82%A3%E3%83%8A.jpg', 0,
+    ('七海ティナ', 'https://gh-proxy.com/github.com/gfriends/gfriends/blob/master/Content/1-FALENO/%E4%B8%83%E6%B5%B7%E3%83%86%E3%82%A3%E3%83%8A.jpg', 0,
      now(), now()),
-    ('AIKA', 'https://github.com/gfriends/gfriends/blob/master/Content/4-Kawaii/AIKA.jpg',
+    ('AIKA', 'https://gh-proxy.com/github.com/gfriends/gfriends/blob/master/Content/4-Kawaii/AIKA.jpg',
      0, now(), now()),
     ('三上悠亜',
-     'https://github.com/gfriends/gfriends/blob/master/Content/2-Juicy-Honey/%E4%B8%89%E4%B8%8A%E6%82%A0%E4%BA%9C.jpg', 0, now(),
+     'https://gh-proxy.com/github.com/gfriends/gfriends/blob/master/Content/2-Juicy-Honey/%E4%B8%89%E4%B8%8A%E6%82%A0%E4%BA%9C.jpg', 0, now(),
      now());
 
 
