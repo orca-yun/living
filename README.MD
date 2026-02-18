@@ -91,64 +91,72 @@
 
 -  [跳转](./README.DEV.md)
 
+
 # 系统预览
 
 ## 运营端
-![首页](./example/01运营端-首页.png)
-![直播管理](./example/02运营端-直播管理.png)
-![直播分享](./example/03运营端-直播分享.png)
-![直播管理直播](./example/04运营端-直播管理直播.png)
-![直播配置](./example/05运营端-直播配置.png)
-![直播配置](./example/06运营端-直播配置.png)
-![直播配置](./example/07运营端-直播配置.png)
-![直播配置](./example/08运营端-直播配置.png)
-![直播配置](./example/09运营端-直播配置.png)
-![直播统计](./example/10运营端-直播统计.png)
-![渠道](./example/11运营端-渠道.png)
-![渠道](./example/12运营端-渠道.png)
-![渠道](./example/13运营端-渠道.png)
-![商品管理](./example/14运营端-商品管理.png)
-![视频管理](./example/15运营端-视频管理.png)
-![订单管理](./example/16运营端-订单管理.png)
-![系统通用](./example/17运营端-系统通用.png)
-![系统礼物](./example/18运营端-系统礼物.png)
-![系统机器人](./example/19运营端-系统机器人.png)
-![系统免审词库](./example/20运营端-系统免审词库.png)
-![系统敏感词库](./example/21运营端-系统敏感词库.png)
+<img src="./example/01运营端-首页.png" width="600" alt="首页">
+<img src="./example/02运营端-直播管理.png" width="600" alt="直播管理">
+<img src="./example/03运营端-直播分享.png" width="600" alt="直播分享">
+<img src="./example/04运营端-直播管理直播.png" width="600" alt="直播管理直播">
+<img src="./example/05运营端-直播配置.png" width="600" alt="直播配置">
+<img src="./example/06运营端-直播配置.png" width="600" alt="直播配置">
+<img src="./example/07运营端-直播配置.png" width="600" alt="直播配置">
+<img src="./example/08运营端-直播配置.png" width="600" alt="直播配置">
+<img src="./example/09运营端-直播配置.png" width="600" alt="直播配置">
+<img src="./example/10运营端-直播统计.png" width="600" alt="直播统计">
+<img src="./example/11运营端-渠道.png" width="600" alt="渠道">
+<img src="./example/12运营端-渠道.png" width="600" alt="渠道">
+<img src="./example/13运营端-渠道.png" width="600" alt="渠道">
+<img src="./example/14运营端-商品管理.png" width="600" alt="商品管理">
+<img src="./example/15运营端-视频管理.png" width="600" alt="视频管理">
+<img src="./example/16运营端-订单管理.png" width="600" alt="订单管理">
+<img src="./example/17运营端-系统通用.png" width="600" alt="系统通用">
+<img src="./example/18运营端-系统礼物.png" width="600" alt="系统礼物">
+<img src="./example/19运营端-系统机器人.png" width="600" alt="系统机器人">
+<img src="./example/20运营端-系统免审词库.png" width="600" alt="系统免审词库">
+<img src="./example/21运营端-系统敏感词库.png" width="600" alt="系统敏感词库">
 
 
 ## 观看端
 
 ### 观看端H5
-![观看端H5](./example/30观看端H5-01.png)
-![观看端H5](./example/31观看端H5-02.png)
-![观看端H5](./example/32观看端H5-03.png)
-![观看端H5](./example/33观看端H5-04.png)
-![观看端H5](./example/34观看端H5-05.png)
-![观看端H5](./example/35观看端H5-06.png)
-
-### 观看端Web
-![观看端Web](./example/36观看端Web-01.png)
-![观看端Web](./example/37观看端Web-02.png)
-![观看端Web](./example/38观看端Web-03.png)
-![观看端Web](./example/39观看端Web-03.png)
-![观看端Web](./example/40观看端Web-04.png)
+<img src="./example/播放端/地址.jpg" width="400" alt="观看端H5">
+<img src="./example/播放端/分享.jpg" width="400" alt="观看端H5">
+<img src="./example/播放端/更多.jpg" width="400" alt="观看端H5">
+<img src="./example/播放端/课件.jpg" width="400" alt="观看端H5">
+<img src="./example/播放端/课件详情.jpg" width="400" alt="观看端H5">
+<img src="./example/播放端/礼物.jpg" width="400" alt="观看端H5">
+<img src="./example/播放端/三分屏.jpg" width="400" alt="观看端H5">
+<img src="./example/播放端/商品栏.jpg" width="400" alt="观看端H5">
+<img src="./example/播放端/竖屏.jpg" width="400" alt="观看端H5">
+<img src="./example/播放端/投诉.jpg" width="400" alt="观看端H5">
+<img src="./example/播放端/我的.jpg" width="400" alt="观看端H5">
+<img src="./example/播放端/下单.jpg" width="400" alt="观看端H5">
+<img src="./example/播放端/线路.jpg" width="400" alt="观看端H5">
+<img src="./example/播放端/支付.jpg" width="400" alt="观看端H5">
+<img src="./example/播放端/字体.jpg" width="400" alt="观看端H5">
 
 ## 助播端
-![助播端](./example/71助播端-01.png)
-![助播端](./example/71助播端-02.png)
-![助播端](./example/71助播端-03.png)
-![助播端](./example/71助播端-04.png)
-![助播端](./example/71助播端-05.png)
-![助播端](./example/71助播端-06.png)
-![助播端](./example/71助播端-07.png)
-![助播端](./example/71助播端-08.png)
-![助播端](./example/71助播端-09.png)
-![助播端](./example/71助播端-10.png)
+<img src="./example/助理端/场控1.png" width="500" alt="助播端">
+<img src="./example/助理端/场控2.png" width="500" alt="助播端">
+<img src="./example/助理端/场控3.png" width="500" alt="助播端">
+<img src="./example/助理端/订单.png" width="500" alt="助播端">
+<img src="./example/助理端/礼物.png" width="500" alt="助播端">
+<img src="./example/助理端/商品操作.png" width="500" alt="助播端">
+<img src="./example/助理端/设置.png" width="500" alt="助播端">
+<img src="./example/助理端/数据.png" width="500" alt="助播端">
+<img src="./example/助理端/消息审核.png" width="500" alt="助播端">
+<img src="./example/助理端/用户列表.png" width="500" alt="助播端">
+<img src="./example/助理端/投诉.png" width="500" alt="助播端">
 
 ## 主播端
 
-![主播端](./example/50主播端-01.png)
-![主播端](./example/51主播端-02.png)
-![主播端](./example/52主播端-03.png)
+<img src="./example/主播端/登录.png" width="500" alt="主播端">
+<img src="./example/主播端/主界面.png" width="500" alt="主播端">
+<img src="./example/主播端/切换课件.png" width="500" alt="主播端">
+<img src="./example/主播端/切换白板.png" width="500" alt="主播端">
+<img src="./example/主播端/观看端白板.png" width="500" alt="主播端">
+
+
 
