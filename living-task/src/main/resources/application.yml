@@ -31,7 +31,7 @@ spring:
       client-name: ${spring.application.name}
       lettuce:
         pool:
-          enabled: true
+          enabled: false
           max-active: 10
           max-idle: 10
           min-idle: 0

@@ -796,7 +796,7 @@ CREATE TABLE `t_user_info`
     `open_id`        varchar(255) NOT NULL COMMENT '当前开发者账号唯一',
     `nick_name`      varchar(20)  NOT NULL COMMENT '用户昵称',
     `head_image_url` varchar(300) NOT NULL COMMENT '用户头像URL地址',
-    `union_id`       varchar(11) COMMENT '用户的unionid,唯一',
+    `union_id`       varchar(255) COMMENT '用户的unionid,唯一',
     `deleted`        int          NOT NULL DEFAULT '0' COMMENT '是否删除: 0 未删除 1 已删除',
     `create_time`    datetime     NOT NULL COMMENT '创建时间',
     `update_time`    datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
